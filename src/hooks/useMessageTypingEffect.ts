@@ -4,7 +4,7 @@ import messageJson from '../assets/messages.json';
 // Defines the message delay in milliseconds.
 const MESSAGE_DELAY = 1750;
 
-export const useTypingEffect = (
+export const useMessageTypingEffect = (
   stage: number,
   importedMessages: typeof messageJson,
 ) => {
@@ -41,7 +41,7 @@ export const useTypingEffect = (
   }, [queuedMessage]);
 
   return {
-    queuedMessage,
+    isTyping: queuedMessage !== undefined,
     messages,
   };
 };
