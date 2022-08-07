@@ -9,7 +9,9 @@ export const useMessageTypingEffect = (
   importedMessages: typeof messageJson,
 ) => {
   const [queuedMessageIndex, setQueuedMessageIndex] = useState<number>(0);
-  const [queuedMessage, setQueuedMessage] = useState<string | undefined>();
+  const [queuedMessage, setQueuedMessage] = useState<
+    string | undefined | null
+  >();
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
@@ -18,30 +20,27 @@ export const useMessageTypingEffect = (
       return;
     }
 
-    setQueuedMessage(stageMessages.messages[queuedMessageIndex]);
+    setQueuedMessage(stageMessages.messages[queuedMessageIndex] ?? null);
   }, [queuedMessageIndex]);
 
   useEffect(() => {
     const stageMessages = importedMessages.at(stage);
-    if (!stageMessages) {
+    if (!stageMessages || !queuedMessage) {
+      return;
+    }
+
+    if (queuedMessageIndex + 1 > stageMessages.messages.length) {
       return;
     }
 
     setTimeout(() => {
-      if (
-        !queuedMessage ||
-        queuedMessageIndex + 1 > stageMessages.messages.length
-      ) {
-        return;
-      }
-
       setMessages((prev) => [...prev, queuedMessage]);
       setQueuedMessageIndex((prev) => prev + 1);
     }, MESSAGE_DELAY);
   }, [queuedMessage]);
 
   return {
-    isTyping: queuedMessage !== undefined,
+    isTyping: queuedMessage !== null,
     messages,
   };
 };

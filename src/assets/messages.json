@@ -4,6 +4,10 @@
       "Hey there!",
       "Welcome to Hotel Automa! My name is Auti, your hotel room booking friend 😃",
       "To get started enter your full name below."
-    ]
+    ],
+    "userInput": {
+      "type": "text",
+      "placeholder": "Enter your fullname"
+    }
   }
 ]
