@@ -76,9 +76,7 @@ const App = () => {
   };
 
   const getUserInput = (): JSX.Element => {
-    const containerBottom = classNames(
-      'absolute left-0 bottom-0 mb-4 right-0 flex mx-auto w-11/12',
-    );
+    const containerBottom = classNames('pt-4 flex mx-auto w-full');
     const data = importedMessages.at(stage);
     const userInputType = data?.userInput.type as MessageType;
 
@@ -144,13 +142,7 @@ const App = () => {
       <ChatWindow>
         <div
           ref={textMessagesRef}
-          className={classNames(
-            importedMessages.at(stage)?.userInput.type === 'text' ||
-              importedMessages.at(stage)?.userInput.type === 'freeText'
-              ? 'h-5/6'
-              : 'h-4/6',
-            'space-y-2 overflow-y-auto max-h-full pb-6 sm:pb-2',
-          )}
+          className="flex-1 space-y-2 overflow-y-auto max-h-full pb-4"
         >
           {messages.map((message, index) => (
             <ChatMessage

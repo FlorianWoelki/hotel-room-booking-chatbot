@@ -43,7 +43,8 @@
     "id": "customMessage",
     "messages": ["Custom Message selected"],
     "userInput": {
-      "type": "freeText"
+      "type": "freeText",
+      "placeholder": "Enter your message"
     }
   }
 ]

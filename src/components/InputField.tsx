@@ -12,7 +12,7 @@ interface Props {
 export const InputField = forwardRef<HTMLInputElement, Props>(
   ({ className, children, ...props }, ref): JSX.Element => {
     return (
-      <div className={classNames('flex items-center', className)}>
+      <div className={classNames('relative flex items-center', className)}>
         <input
           ref={ref}
           type="text"
