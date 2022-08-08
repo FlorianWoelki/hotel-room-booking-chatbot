@@ -9,6 +9,11 @@ import { TypingIndicator } from './components/TypingIndicator';
 import { useMessageTypingEffect } from './hooks/useMessageTypingEffect';
 import { classNames } from './util/classNames';
 
+interface Selection {
+  value: string;
+  clickMessageId: string;
+}
+
 const App = () => {
   const [stage, setStage] = useState<number>(0);
   const [isWaitingForInput, setIsWaitingForInput] = useState<boolean>(false);
@@ -45,6 +50,20 @@ const App = () => {
     setRecentAnswer(message);
     setMessages((prev) => [...prev, { value: message, type: 'user' }]);
     setStage((prev) => prev + 1);
+  };
+
+  const submitSelection = (selection: Selection): void => {
+    const foundMessageIndex = importedMessages.findIndex(
+      (message) => message.id === selection.clickMessageId,
+    );
+    if (foundMessageIndex === -1) {
+      console.error(
+        `Submitted selection with click message id '${selection.clickMessageId}' was not found.`,
+      );
+    }
+
+    submitAnswer(selection.value);
+    setStage(foundMessageIndex);
   };
 
   const getUserInput = (): JSX.Element => {
@@ -97,8 +116,8 @@ const App = () => {
             <p className="text-gray-500">Please wait</p>
           ) : (
             data?.userInput.selections?.map((selection, index) => (
-              <Button key={index} onClick={() => submitAnswer(selection)}>
-                {selection}
+              <Button key={index} onClick={() => submitSelection(selection)}>
+                {selection.value}
               </Button>
             ))
           )}

@@ -18,7 +18,32 @@
     ],
     "userInput": {
       "type": "selection",
-      "selections": ["Book a Room", "Arrange a Call Back", "Something else"]
+      "selections": [
+        { "value": "Book a Room", "clickMessageId": "bookRoom" },
+        { "value": "Arrange a Call Back", "clickMessageId": "callBack" },
+        { "value": "Something else", "clickMessageId": "customMessage" }
+      ]
+    }
+  },
+  {
+    "id": "bookRoom",
+    "messages": ["Book a Room selected"],
+    "userInput": {
+      "type": ""
+    }
+  },
+  {
+    "id": "callBack",
+    "messages": ["Call Back selected"],
+    "userInput": {
+      "type": ""
+    }
+  },
+  {
+    "id": "customMessage",
+    "messages": ["Custom Message selected"],
+    "userInput": {
+      "type": "freeText"
     }
   }
 ]
