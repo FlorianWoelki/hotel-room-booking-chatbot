@@ -21,9 +21,12 @@ const App = () => {
   );
 
   useEffect(() => {
-    if (!isTyping) {
+    if (!isTyping && inputFieldRef.current) {
       setRecentAnswer(undefined);
       setIsWaitingForInput(true);
+      setTimeout(() => {
+        inputFieldRef.current!.focus();
+      });
     }
   }, [isTyping]);
 
