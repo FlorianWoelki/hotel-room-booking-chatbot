@@ -145,7 +145,8 @@ const App = () => {
         <div
           ref={textMessagesRef}
           className={classNames(
-            importedMessages.at(stage)?.userInput.type === 'text'
+            importedMessages.at(stage)?.userInput.type === 'text' ||
+              importedMessages.at(stage)?.userInput.type === 'freeText'
               ? 'h-5/6'
               : 'h-4/6',
             'space-y-2 overflow-y-auto max-h-full pb-6 sm:pb-2',
