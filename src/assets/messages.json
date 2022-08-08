@@ -17,7 +17,8 @@
       "How can I help you today?"
     ],
     "userInput": {
-      "type": "selection"
+      "type": "selection",
+      "selections": ["Book a Room", "Arrange a Call Back", "Something else"]
     }
   }
 ]
