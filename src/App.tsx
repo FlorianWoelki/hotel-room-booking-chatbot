@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ReactComponent as PaperAirplanIcon } from './assets/icons/paper-airplane.svg';
 import importedMessages from './assets/messages.json';
+import { getResponse } from './chatbot';
 import { Button } from './components/Button';
 import { ChatMessage } from './components/ChatMessage';
 import { ChatWindow } from './components/ChatWindow';
@@ -24,7 +25,7 @@ const App = () => {
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
   const textMessagesRef = useRef<HTMLDivElement | null>(null);
 
-  const { isTyping, messages, setMessages, resetQueuedMessages } =
+  const { isTyping, messages, setMessages, addTypingMessage } =
     useMessageTypingEffect(stage, importedMessages, recentAnswer);
 
   useEffect(() => {
@@ -52,8 +53,8 @@ const App = () => {
     setMessages((prev) => [...prev, { value: message, type: 'user' }]);
 
     if (type === 'freeText') {
-      // TODO: Handle free text response
-      resetQueuedMessages();
+      const response = getResponse(message);
+      addTypingMessage(response);
       return;
     }
 

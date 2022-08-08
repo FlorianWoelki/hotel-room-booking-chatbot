@@ -41,7 +41,7 @@
   },
   {
     "id": "customMessage",
-    "messages": ["Custom Message selected"],
+    "messages": ["Type anything you want and I will try to answer it 😃"],
     "userInput": {
       "type": "freeText",
       "placeholder": "Enter your message"

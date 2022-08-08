@@ -44,12 +44,20 @@ const checkAllMessages = (message: string[]): string | null => {
   const probabilityMap: { [key: string]: number } = {};
 
   const createResponse = (
-    botResponse: string,
+    botResponse: string | string[],
     listOfWords: string[],
     singleResponse = false,
     requiredWords: string[] = [],
   ) => {
-    probabilityMap[botResponse] = messageProbability(
+    let randomBotResponse: string = '';
+    if (Array.isArray(botResponse)) {
+      randomBotResponse =
+        botResponse[Math.floor(Math.random() * botResponse.length)];
+    } else {
+      randomBotResponse = botResponse;
+    }
+
+    probabilityMap[randomBotResponse] = messageProbability(
       message,
       listOfWords,
       singleResponse,
@@ -57,13 +65,23 @@ const checkAllMessages = (message: string[]): string | null => {
     );
   };
 
-  createResponse('Hello!', ['hello', 'hi', 'hey'], true);
+  createResponse(
+    ['Hello!', 'Hi, how can I help you?', 'Hello there 😀'],
+    ['hello', 'hi', 'hey'],
+    true,
+  );
 
   const bestMatch = findMaxProbabilityKey(probabilityMap);
   return bestMatch && probabilityMap[bestMatch] ? bestMatch : null;
 };
 
-export const getResponse = (userInput: string): string | null => {
+const randomUnsureMessage = (): string => {
+  const items: string[] = ['I am not sure, what that means 😔'];
+  return items[Math.floor(Math.random() * items.length)];
+};
+
+export const getResponse = (userInput: string): string => {
   const splitMessage = userInput.toLowerCase().split(/\s+|[,;?!.-]\s*/g);
-  return checkAllMessages(splitMessage);
+  const response = checkAllMessages(splitMessage);
+  return response ?? randomUnsureMessage();
 };

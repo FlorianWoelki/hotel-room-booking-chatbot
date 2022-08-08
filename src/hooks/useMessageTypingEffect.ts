@@ -20,6 +20,10 @@ export const useMessageTypingEffect = (
   >();
   const [messages, setMessages] = useState<Message[]>([]);
 
+  const addTypingMessage = (message: string) => {
+    setQueuedMessage(message);
+  };
+
   useEffect(() => {
     const stageMessages = importedMessages.at(stage);
     if (!stageMessages) {
@@ -35,9 +39,9 @@ export const useMessageTypingEffect = (
       return;
     }
 
-    if (queuedMessageIndex + 1 > stageMessages.messages.length) {
+    /*if (queuedMessageIndex + 1 > stageMessages.messages.length) {
       return;
-    }
+    }*/
 
     setTimeout(() => {
       const message = recentAnswer
@@ -49,17 +53,13 @@ export const useMessageTypingEffect = (
   }, [queuedMessage]);
 
   useEffect(() => {
-    resetQueuedMessages();
-  }, [stage]);
-
-  const resetQueuedMessages = (): void => {
     setQueuedMessageIndex(0);
-  };
+  }, [stage]);
 
   return {
     isTyping: queuedMessage !== null,
     messages,
     setMessages,
-    resetQueuedMessages,
+    addTypingMessage,
   };
 };
