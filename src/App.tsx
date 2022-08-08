@@ -40,7 +40,7 @@ const App = () => {
 
   const getUserInput = (): JSX.Element => {
     const containerBottom = classNames(
-      'absolute left-0 bottom-0 mb-8 right-0 flex mx-auto w-11/12',
+      'absolute left-0 bottom-0 mb-4 right-0 flex mx-auto w-11/12',
     );
     const data = importedMessages.at(stage);
     const userInputType = data?.userInput.type;
@@ -103,7 +103,14 @@ const App = () => {
   return (
     <div className="flex items-center justify-center h-screen mx-8 antialiased">
       <ChatWindow>
-        <div className="space-y-2 overflow-y-auto max-h-full">
+        <div
+          className={classNames(
+            importedMessages.at(stage)?.userInput.type === 'text'
+              ? 'h-5/6'
+              : 'h-4/6',
+            'space-y-2 overflow-y-auto max-h-full',
+          )}
+        >
           {messages.map((message, index) => (
             <ChatMessage
               key={index}
