@@ -4,15 +4,21 @@ import messageJson from '../assets/messages.json';
 // Defines the message delay in milliseconds.
 const MESSAGE_DELAY = 1750;
 
+interface Message {
+  value: string;
+  type: 'user' | 'bot';
+}
+
 export const useMessageTypingEffect = (
   stage: number,
   importedMessages: typeof messageJson,
+  recentAnswer?: string,
 ) => {
   const [queuedMessageIndex, setQueuedMessageIndex] = useState<number>(0);
   const [queuedMessage, setQueuedMessage] = useState<
     string | undefined | null
   >();
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
     const stageMessages = importedMessages.at(stage);
@@ -34,13 +40,21 @@ export const useMessageTypingEffect = (
     }
 
     setTimeout(() => {
-      setMessages((prev) => [...prev, queuedMessage]);
+      const message = recentAnswer
+        ? queuedMessage.replace(/\$userInput/g, recentAnswer)
+        : queuedMessage;
+      setMessages((prev) => [...prev, { value: message, type: 'bot' }]);
       setQueuedMessageIndex((prev) => prev + 1);
     }, MESSAGE_DELAY);
   }, [queuedMessage]);
 
+  useEffect(() => {
+    setQueuedMessageIndex(0);
+  }, [stage]);
+
   return {
     isTyping: queuedMessage !== null,
     messages,
+    setMessages,
   };
 };

@@ -9,5 +9,15 @@
       "type": "text",
       "placeholder": "Enter your fullname"
     }
+  },
+  {
+    "messages": [
+      "Hi $userInput",
+      "Nice to meet you 🤝",
+      "How can I help you today?"
+    ],
+    "userInput": {
+      "type": "selection"
+    }
   }
 ]
