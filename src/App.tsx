@@ -15,12 +15,21 @@ const App = () => {
   const [recentAnswer, setRecentAnswer] = useState<string | undefined>();
 
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
+  const textMessagesRef = useRef<HTMLDivElement | null>(null);
 
   const { isTyping, messages, setMessages } = useMessageTypingEffect(
     stage,
     importedMessages,
     recentAnswer,
   );
+
+  useEffect(() => {
+    if (!textMessagesRef.current) {
+      return;
+    }
+
+    textMessagesRef.current.scrollTop = textMessagesRef.current.scrollHeight;
+  }, [messages]);
 
   useEffect(() => {
     if (!isTyping && inputFieldRef.current) {
@@ -104,6 +113,7 @@ const App = () => {
     <div className="flex items-center justify-center h-screen mx-8 antialiased">
       <ChatWindow>
         <div
+          ref={textMessagesRef}
           className={classNames(
             importedMessages.at(stage)?.userInput.type === 'text'
               ? 'h-5/6'
