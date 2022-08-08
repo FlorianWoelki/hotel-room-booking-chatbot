@@ -118,7 +118,7 @@ const App = () => {
             importedMessages.at(stage)?.userInput.type === 'text'
               ? 'h-5/6'
               : 'h-4/6',
-            'space-y-2 overflow-y-auto max-h-full',
+            'space-y-2 overflow-y-auto max-h-full pb-6 sm:pb-2',
           )}
         >
           {messages.map((message, index) => (
