@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import messageJson from '../assets/messages.json';
 
 // Defines the message delay in milliseconds.
-const MESSAGE_DELAY = 100;
+const MESSAGE_DELAY = 1750;
 
 interface Message {
   value: string;
@@ -49,12 +49,17 @@ export const useMessageTypingEffect = (
   }, [queuedMessage]);
 
   useEffect(() => {
-    setQueuedMessageIndex(0);
+    resetQueuedMessages();
   }, [stage]);
+
+  const resetQueuedMessages = (): void => {
+    setQueuedMessageIndex(0);
+  };
 
   return {
     isTyping: queuedMessage !== null,
     messages,
     setMessages,
+    resetQueuedMessages,
   };
 };

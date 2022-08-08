@@ -14,6 +14,8 @@ interface Selection {
   clickMessageId: string;
 }
 
+type MessageType = 'text' | 'selection' | 'freeText';
+
 const App = () => {
   const [stage, setStage] = useState<number>(0);
   const [isWaitingForInput, setIsWaitingForInput] = useState<boolean>(false);
@@ -22,18 +24,18 @@ const App = () => {
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
   const textMessagesRef = useRef<HTMLDivElement | null>(null);
 
-  const { isTyping, messages, setMessages } = useMessageTypingEffect(
-    stage,
-    importedMessages,
-    recentAnswer,
-  );
+  const { isTyping, messages, setMessages, resetQueuedMessages } =
+    useMessageTypingEffect(stage, importedMessages, recentAnswer);
 
   useEffect(() => {
     if (!textMessagesRef.current) {
       return;
     }
 
-    textMessagesRef.current.scrollTop = textMessagesRef.current.scrollHeight;
+    setTimeout(() => {
+      textMessagesRef.current!.scrollTop =
+        textMessagesRef.current!.scrollHeight;
+    });
   }, [messages]);
 
   useEffect(() => {
@@ -46,9 +48,16 @@ const App = () => {
     }
   }, [isTyping]);
 
-  const submitAnswer = (message: string): void => {
-    setRecentAnswer(message);
+  const submitAnswer = (type: MessageType, message: string): void => {
     setMessages((prev) => [...prev, { value: message, type: 'user' }]);
+
+    if (type === 'freeText') {
+      // TODO: Handle free text response
+      resetQueuedMessages();
+      return;
+    }
+
+    setRecentAnswer(message);
     setStage((prev) => prev + 1);
   };
 
@@ -62,7 +71,7 @@ const App = () => {
       );
     }
 
-    submitAnswer(selection.value);
+    submitAnswer('selection', selection.value);
     setStage(foundMessageIndex);
   };
 
@@ -71,9 +80,9 @@ const App = () => {
       'absolute left-0 bottom-0 mb-4 right-0 flex mx-auto w-11/12',
     );
     const data = importedMessages.at(stage);
-    const userInputType = data?.userInput.type;
+    const userInputType = data?.userInput.type as MessageType;
 
-    if (userInputType === 'text') {
+    if (userInputType === 'text' || userInputType === 'freeText') {
       return (
         <InputField
           ref={inputFieldRef}
@@ -86,7 +95,8 @@ const App = () => {
           className={containerBottom}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && inputFieldRef.current) {
-              submitAnswer(inputFieldRef.current.value);
+              submitAnswer(userInputType, inputFieldRef.current.value);
+              inputFieldRef.current.value = '';
             }
           }}
         >
@@ -96,7 +106,8 @@ const App = () => {
             className="absolute right-0 mr-2 text-white bg-blue-500 p-2 rounded-full transition duration-150 ease-in-out hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-400"
             onClick={() => {
               if (inputFieldRef.current) {
-                submitAnswer(inputFieldRef.current.value);
+                submitAnswer(userInputType, inputFieldRef.current.value);
+                inputFieldRef.current.value = '';
               }
             }}
           >
