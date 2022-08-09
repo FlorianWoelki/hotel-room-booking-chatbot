@@ -21,7 +21,7 @@ interface MessageData {
   id: string;
   messages: string[];
   userInput: {
-    type: MessageType;
+    type: string;
     followMessageId?: string;
     placeholder?: string;
     selections?: Selection[];
@@ -138,6 +138,14 @@ const App = () => {
     const data = importedMessages.at(stage);
     const userInputType = data?.userInput.type as MessageType;
 
+    if (!data) {
+      return (
+        <p className="text-center text-red-500">
+          Data is not defined. Please check your `messages.json` file.
+        </p>
+      );
+    }
+
     if (userInputType === 'text' || userInputType === 'freeText') {
       return (
         <InputField
@@ -151,7 +159,7 @@ const App = () => {
           className={containerBottom}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && inputFieldRef.current) {
-              submitAnswer(data as any, inputFieldRef.current.value);
+              submitAnswer(data, inputFieldRef.current.value);
               inputFieldRef.current.value = '';
             }
           }}
@@ -162,7 +170,7 @@ const App = () => {
             className="absolute right-0 mr-2 text-white bg-blue-500 p-2 rounded-full transition duration-150 ease-in-out hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-400"
             onClick={() => {
               if (inputFieldRef.current) {
-                submitAnswer(data as any, inputFieldRef.current.value);
+                submitAnswer(data, inputFieldRef.current.value);
                 inputFieldRef.current.value = '';
               }
             }}
@@ -185,7 +193,7 @@ const App = () => {
             data?.userInput.selections?.map((selection, index) => (
               <Button
                 key={index}
-                onClick={() => submitSelection(data as any, selection)}
+                onClick={() => submitSelection(data, selection)}
               >
                 {selection.value}
               </Button>
