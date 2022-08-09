@@ -1,27 +1,30 @@
 [
   {
+    "id": "introduction",
     "messages": [
       "Hey there!",
       "Welcome to Hotel Automa! My name is Auti, your hotel room booking friend 😃",
       "To get started enter your full name below."
     ],
     "userInput": {
+      "followMessageId": "greetings",
       "type": "text",
       "placeholder": "Enter your fullname"
     }
   },
   {
+    "id": "greetings",
     "messages": [
-      "Hi $userInput",
+      "Hi $fullname",
       "Nice to meet you 🤝",
       "How can I help you today?"
     ],
     "userInput": {
       "type": "selection",
       "selections": [
-        { "value": "Book a Room", "clickMessageId": "bookRoom" },
-        { "value": "Arrange a Call Back", "clickMessageId": "callBack" },
-        { "value": "Something else", "clickMessageId": "customMessage" }
+        { "value": "Book a Room", "followMessageId": "bookRoom" },
+        { "value": "Arrange a Call Back", "followMessageId": "callBack" },
+        { "value": "Something else", "followMessageId": "customMessage" }
       ]
     }
   },
@@ -34,9 +37,39 @@
   },
   {
     "id": "callBack",
-    "messages": ["Call Back selected"],
+    "messages": [
+      "Sure no problem! I can arrage that for you $fullname",
+      "What is your enquiry regarding?"
+    ],
     "userInput": {
-      "type": ""
+      "type": "selection",
+      "selections": [
+        { "value": "Room Booking", "followMessageId": "inquiry" },
+        { "value": "General Enquiry", "followMessageId": "inquiry" }
+      ]
+    }
+  },
+  {
+    "id": "inquiry",
+    "messages": [
+      "Thank you $fullname 😌",
+      "Now, please enter your phone number below, so that we can reach out to you."
+    ],
+    "userInput": {
+      "followMessageId": "inquiry-response",
+      "type": "text",
+      "placeholder": "Enter your mobile number"
+    }
+  },
+  {
+    "id": "inquiry-response",
+    "messages": [
+      "Thank you so much!",
+      "A member of our team will be in touch soon.",
+      "Have a wonderful day 😃"
+    ],
+    "userInput": {
+      "type": "terminate"
     }
   },
   {

@@ -12,21 +12,59 @@ import { classNames } from './util/classNames';
 
 interface Selection {
   value: string;
-  clickMessageId: string;
+  followMessageId: string;
 }
 
-type MessageType = 'text' | 'selection' | 'freeText';
+type MessageType = 'text' | 'selection' | 'freeText' | 'terminate';
+
+interface MessageData {
+  id: string;
+  messages: string[];
+  userInput: {
+    type: MessageType;
+    followMessageId?: string;
+    placeholder?: string;
+    selections?: Selection[];
+  };
+}
 
 const App = () => {
   const [stage, setStage] = useState<number>(0);
   const [isWaitingForInput, setIsWaitingForInput] = useState<boolean>(false);
   const [recentAnswer, setRecentAnswer] = useState<string | undefined>();
+  const [savedData, setSavedData] = useState<{ [key: string]: any }>({});
 
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
   const textMessagesRef = useRef<HTMLDivElement | null>(null);
 
+  const transformMessage = (message: string): string => {
+    if (recentAnswer) {
+      const regex = /\$\w+/g;
+      const matchedPlaceholder = message.match(regex);
+
+      if (matchedPlaceholder && matchedPlaceholder.length > 0) {
+        const placeholder = matchedPlaceholder[0];
+        if (isKeyInSavedData(placeholder)) {
+          message = message.replace(regex, savedData[placeholder]);
+        } else {
+          message = message.replace(regex, recentAnswer);
+          setSavedData((prev) => ({
+            ...prev,
+            [placeholder]: recentAnswer,
+          }));
+        }
+      }
+    }
+
+    return message;
+  };
+
   const { isTyping, messages, setMessages, addTypingMessage } =
-    useMessageTypingEffect(stage, importedMessages, recentAnswer);
+    useMessageTypingEffect(stage, importedMessages, transformMessage);
+
+  const isKeyInSavedData = (key: string): boolean => {
+    return savedData[key] !== undefined;
+  };
 
   useEffect(() => {
     if (!textMessagesRef.current) {
@@ -49,31 +87,50 @@ const App = () => {
     }
   }, [isTyping]);
 
-  const submitAnswer = (type: MessageType, message: string): void => {
+  const submitAnswer = (data: MessageData, value: string | Selection): void => {
+    const message = typeof value === 'string' ? value : value.value;
+
     setMessages((prev) => [...prev, { value: message, type: 'user' }]);
 
-    if (type === 'freeText') {
+    if (data.userInput.type === 'terminate') {
+      return;
+    }
+
+    if (data.userInput.type === 'freeText') {
       const response = getResponse(message);
       addTypingMessage(response);
       return;
     }
 
-    setRecentAnswer(message);
-    setStage((prev) => prev + 1);
-  };
-
-  const submitSelection = (selection: Selection): void => {
-    const foundMessageIndex = importedMessages.findIndex(
-      (message) => message.id === selection.clickMessageId,
-    );
-    if (foundMessageIndex === -1) {
-      console.error(
-        `Submitted selection with click message id '${selection.clickMessageId}' was not found.`,
+    let foundMessageIndex = -1;
+    if (
+      !data.userInput.followMessageId &&
+      typeof value === 'object' &&
+      data.userInput.type === 'selection'
+    ) {
+      foundMessageIndex = importedMessages.findIndex(
+        (message) => message.id === value.followMessageId,
       );
     }
 
-    submitAnswer('selection', selection.value);
+    if (foundMessageIndex === -1) {
+      foundMessageIndex = importedMessages.findIndex(
+        (message) => message.id === data.userInput.followMessageId,
+      );
+      if (foundMessageIndex === -1) {
+        console.error(
+          `Submitted follow message id '${data.userInput.followMessageId}' was not found.`,
+        );
+        return;
+      }
+    }
+
+    setRecentAnswer(message);
     setStage(foundMessageIndex);
+  };
+
+  const submitSelection = (data: MessageData, selection: Selection): void => {
+    submitAnswer(data, selection);
   };
 
   const getUserInput = (): JSX.Element => {
@@ -94,7 +151,7 @@ const App = () => {
           className={containerBottom}
           onKeyDown={(e) => {
             if (e.key === 'Enter' && inputFieldRef.current) {
-              submitAnswer(userInputType, inputFieldRef.current.value);
+              submitAnswer(data as any, inputFieldRef.current.value);
               inputFieldRef.current.value = '';
             }
           }}
@@ -105,7 +162,7 @@ const App = () => {
             className="absolute right-0 mr-2 text-white bg-blue-500 p-2 rounded-full transition duration-150 ease-in-out hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-400"
             onClick={() => {
               if (inputFieldRef.current) {
-                submitAnswer(userInputType, inputFieldRef.current.value);
+                submitAnswer(data as any, inputFieldRef.current.value);
                 inputFieldRef.current.value = '';
               }
             }}
@@ -126,7 +183,10 @@ const App = () => {
             <p className="text-gray-500">Please wait</p>
           ) : (
             data?.userInput.selections?.map((selection, index) => (
-              <Button key={index} onClick={() => submitSelection(selection)}>
+              <Button
+                key={index}
+                onClick={() => submitSelection(data as any, selection)}
+              >
                 {selection.value}
               </Button>
             ))

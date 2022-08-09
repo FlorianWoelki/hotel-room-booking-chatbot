@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import messageJson from '../assets/messages.json';
 
 // Defines the message delay in milliseconds.
-const MESSAGE_DELAY = 1750;
+const MESSAGE_DELAY = 100;
 
 interface Message {
   value: string;
@@ -12,7 +12,7 @@ interface Message {
 export const useMessageTypingEffect = (
   stage: number,
   importedMessages: typeof messageJson,
-  recentAnswer?: string,
+  transformMessage?: (message: string) => string,
 ) => {
   const [queuedMessageIndex, setQueuedMessageIndex] = useState<number>(0);
   const [queuedMessage, setQueuedMessage] = useState<
@@ -20,7 +20,12 @@ export const useMessageTypingEffect = (
   >();
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const addTypingMessage = (message: string) => {
+  const addTypingMessage = (message: string | null) => {
+    if (message && transformMessage) {
+      setQueuedMessage(transformMessage(message));
+      return;
+    }
+
     setQueuedMessage(message);
   };
 
@@ -30,7 +35,7 @@ export const useMessageTypingEffect = (
       return;
     }
 
-    setQueuedMessage(stageMessages.messages[queuedMessageIndex] ?? null);
+    addTypingMessage(stageMessages.messages[queuedMessageIndex] ?? null);
   }, [queuedMessageIndex]);
 
   useEffect(() => {
@@ -44,10 +49,7 @@ export const useMessageTypingEffect = (
     }*/
 
     setTimeout(() => {
-      const message = recentAnswer
-        ? queuedMessage.replace(/\$userInput/g, recentAnswer)
-        : queuedMessage;
-      setMessages((prev) => [...prev, { value: message, type: 'bot' }]);
+      setMessages((prev) => [...prev, { value: queuedMessage, type: 'bot' }]);
       setQueuedMessageIndex((prev) => prev + 1);
     }, MESSAGE_DELAY);
   }, [queuedMessage]);
