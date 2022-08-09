@@ -135,7 +135,11 @@ const App = () => {
       );
     }
 
-    return <p className={containerBottom}>User Input type not found</p>;
+    return (
+      <p className="text-center text-red-500">
+        User Input type not found. Please check your `messages.json` file.
+      </p>
+    );
   };
 
   return (
