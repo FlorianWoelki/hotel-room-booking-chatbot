@@ -3,6 +3,7 @@ import { ReactComponent as PaperAirplanIcon } from './assets/icons/paper-airplan
 import importedMessages from './assets/messages.json';
 import { getResponse } from './chatbot';
 import { Button } from './components/Button';
+import { ChatError } from './components/ChatError';
 import { ChatMessage } from './components/ChatMessage';
 import { ChatWindow } from './components/ChatWindow';
 import { InputField } from './components/InputField';
@@ -140,9 +141,9 @@ const App = () => {
 
     if (!data) {
       return (
-        <p className="text-center text-red-500">
+        <ChatError>
           Data is not defined. Please check your `messages.json` file.
-        </p>
+        </ChatError>
       );
     }
 
@@ -204,9 +205,9 @@ const App = () => {
     }
 
     return (
-      <p className="text-center text-red-500">
+      <ChatError>
         User Input type not found. Please check your `messages.json` file.
-      </p>
+      </ChatError>
     );
   };
 
