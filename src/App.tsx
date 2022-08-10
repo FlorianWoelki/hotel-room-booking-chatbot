@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 import { ReactComponent as PaperAirplanIcon } from './assets/icons/paper-airplane.svg';
 import importedMessages from './assets/messages.json';
 import { getResponse } from './chatbot';
@@ -17,7 +20,7 @@ interface Selection {
   followMessageId: string;
 }
 
-type MessageType = 'text' | 'selection' | 'freeText' | 'terminate';
+type MessageType = 'text' | 'selection' | 'freeText' | 'terminate' | 'date';
 
 interface MessageData {
   id: string;
@@ -35,6 +38,10 @@ const App = () => {
   const [isWaitingForInput, setIsWaitingForInput] = useState<boolean>(false);
   const [recentAnswer, setRecentAnswer] = useState<string | undefined>();
   const [savedData, setSavedData] = useState<{ [key: string]: any }>({});
+
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
+  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
   const textMessagesRef = useRef<HTMLDivElement | null>(null);
@@ -66,6 +73,10 @@ const App = () => {
 
   const isKeyInSavedData = (key: string): boolean => {
     return savedData[key] !== undefined;
+  };
+
+  const formatDate = (date: Date): string => {
+    return date.toLocaleDateString('de-DE');
   };
 
   useEffect(() => {
@@ -203,6 +214,33 @@ const App = () => {
                 {selection.value}
               </Button>
             ))
+          )}
+        </div>
+      );
+    } else if (userInputType === 'date') {
+      return (
+        <div
+          className={classNames(containerBottom, 'items-center justify-center')}
+        >
+          <Button onClick={() => setIsCalendarOpen((prev) => !prev)}>
+            {startDate.getTime() === endDate?.getTime()
+              ? 'Select a date'
+              : `${formatDate(startDate)} - ${endDate && formatDate(endDate)}`}
+          </Button>
+          {isCalendarOpen && (
+            <DatePicker
+              inline
+              selected={startDate}
+              selectsRange
+              startDate={startDate}
+              endDate={endDate}
+              minDate={new Date()}
+              onChange={(dates) => {
+                const [start, end] = dates;
+                setStartDate(start!);
+                setEndDate(end!);
+              }}
+            />
           )}
         </div>
       );

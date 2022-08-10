@@ -8,7 +8,7 @@
     ],
     "userInput": {
       "followMessageId": "greetings",
-      "type": "text",
+      "type": "date",
       "placeholder": "Enter your fullname"
     }
   },
@@ -66,8 +66,8 @@
     "messages": ["Wonderful! How long would you like to stay?"],
     "userInput": {
       "followMessageId": "TBD",
-      "type": "text",
-      "validation": "number",
+      "type": "date",
+      "validation": "date",
       "placeholder": "TBD"
     }
   },

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import messageJson from '../assets/messages.json';
 
 // Defines the message delay in milliseconds.
-const MESSAGE_DELAY = 1750;
+const MESSAGE_DELAY = 100;
 
 interface Message {
   value: string;
