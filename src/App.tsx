@@ -10,6 +10,7 @@ import { InputField } from './components/InputField';
 import { TypingIndicator } from './components/TypingIndicator';
 import { useMessageTypingEffect } from './hooks/useMessageTypingEffect';
 import { classNames } from './util/classNames';
+import { getValidationByStr } from './util/inputFieldValidation';
 
 interface Selection {
   value: string;
@@ -151,6 +152,7 @@ const App = () => {
       return (
         <InputField
           ref={inputFieldRef}
+          validation={getValidationByStr(data.userInput.validation)}
           placeholder={
             !isWaitingForInput
               ? 'Please wait'
@@ -165,19 +167,21 @@ const App = () => {
             }
           }}
         >
-          <button
-            type="button"
-            disabled={!isWaitingForInput}
-            className="absolute right-0 mr-2 text-white bg-blue-500 p-2 rounded-full transition duration-150 ease-in-out hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-400"
-            onClick={() => {
-              if (inputFieldRef.current) {
-                submitAnswer(data, inputFieldRef.current.value);
-                inputFieldRef.current.value = '';
-              }
-            }}
-          >
-            <PaperAirplanIcon className="w-5 h-5" />
-          </button>
+          {({ isValid }) => (
+            <button
+              type="button"
+              disabled={!isWaitingForInput || !isValid}
+              className="absolute right-0 mr-2 text-white bg-blue-500 p-2 rounded-full transition duration-150 ease-in-out hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-400"
+              onClick={() => {
+                if (inputFieldRef.current) {
+                  submitAnswer(data, inputFieldRef.current.value);
+                  inputFieldRef.current.value = '';
+                }
+              }}
+            >
+              <PaperAirplanIcon className="w-5 h-5" />
+            </button>
+          )}
         </InputField>
       );
     } else if (userInputType === 'selection') {

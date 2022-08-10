@@ -90,6 +90,7 @@
     "userInput": {
       "followMessageId": "inquiry-response",
       "type": "text",
+      "validation": "mobilePhoneNumber",
       "placeholder": "Enter your mobile number"
     }
   },
