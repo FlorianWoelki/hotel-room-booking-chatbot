@@ -37,6 +37,7 @@
     "userInput": {
       "followMessageId": "howManyChildren",
       "type": "text",
+      "validation": "number",
       "placeholder": "Enter the amount of adult guests"
     }
   },
@@ -46,6 +47,7 @@
     "userInput": {
       "followMessageId": "howManyRooms",
       "type": "text",
+      "validation": "number",
       "placeholder": "Enter the amount of children guests"
     }
   },
@@ -55,6 +57,7 @@
     "userInput": {
       "followMessageId": "howLongStay",
       "type": "text",
+      "validation": "number",
       "placeholder": "Enter the number of rooms"
     }
   },
@@ -64,6 +67,7 @@
     "userInput": {
       "followMessageId": "TBD",
       "type": "text",
+      "validation": "number",
       "placeholder": "TBD"
     }
   },

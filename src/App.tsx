@@ -160,8 +160,8 @@ const App = () => {
           }
           disabled={!isWaitingForInput}
           className={containerBottom}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && inputFieldRef.current) {
+          onKeyDown={(e, isValid) => {
+            if (e.key === 'Enter' && inputFieldRef.current && isValid) {
               submitAnswer(data, inputFieldRef.current.value);
               inputFieldRef.current.value = '';
             }
