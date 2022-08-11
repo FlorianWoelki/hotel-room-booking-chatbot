@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-import DatePicker from 'react-datepicker';
 
 import { ReactComponent as PaperAirplanIcon } from './assets/icons/paper-airplane.svg';
 import importedMessages from './assets/messages.json';
 import { getResponse } from './chatbot';
 import { Button } from './components/Button';
+import { ChatDatePicker } from './components/ChatDatePicker';
 import { ChatError } from './components/ChatError';
 import { ChatMessage } from './components/ChatMessage';
 import { ChatWindow } from './components/ChatWindow';
@@ -236,28 +236,15 @@ const App = () => {
           </Button>
           {isCalendarOpen && (
             <div className="absolute left-0 right-0 bottom-0 flex items-center justify-center mb-16 xs:mb-12">
-              <button
-                type="button"
-                className="fixed inset-0 cursor-default outline-none"
-                tabIndex={-1}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setIsCalendarOpen(false);
-                }}
-              ></button>
-              <DatePicker
-                inline
-                selected={startDate}
-                selectsRange
+              <ChatDatePicker
                 startDate={startDate}
                 endDate={endDate}
-                minDate={new Date()}
-                onChange={(dates) => {
-                  const [start, end] = dates;
-                  setStartDate(start!);
-                  setEndDate(end!);
+                onClickOutside={() => setIsCalendarOpen(false)}
+                onChange={(startDate, endDate) => {
+                  setStartDate(startDate);
+                  setEndDate(endDate);
                 }}
-              />
+              ></ChatDatePicker>
             </div>
           )}
         </div>
