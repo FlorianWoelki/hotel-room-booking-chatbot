@@ -224,18 +224,31 @@ const App = () => {
             'items-center justify-center relative',
           )}
         >
-          <Button onClick={() => setIsCalendarOpen((prev) => !prev)}>
-            {startDate.getTime() === endDate?.getTime()
-              ? 'Select a date'
+          <Button
+            className="z-10"
+            onClick={() => setIsCalendarOpen((prev) => !prev)}
+          >
+            {!startDate ||
+            !endDate ||
+            startDate.getTime() === endDate?.getTime()
+              ? 'Select check in and check out date'
               : `${formatDate(startDate)} - ${endDate && formatDate(endDate)}`}
           </Button>
-          <div className="absolute left-0 right-0 bottom-0 flex items-center justify-center mb-10">
-            {isCalendarOpen && (
+          {isCalendarOpen && (
+            <div className="absolute left-0 right-0 bottom-0 flex items-center justify-center mb-16 xs:mb-12">
+              <button
+                type="button"
+                className="fixed inset-0 cursor-default outline-none"
+                tabIndex={-1}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsCalendarOpen(false);
+                }}
+              ></button>
               <DatePicker
                 inline
                 selected={startDate}
                 selectsRange
-                onClickOutside={() => setIsCalendarOpen(false)}
                 startDate={startDate}
                 endDate={endDate}
                 minDate={new Date()}
@@ -245,8 +258,8 @@ const App = () => {
                   setEndDate(end!);
                 }}
               />
-            )}
-          </div>
+            </div>
+          )}
         </div>
       );
     }
