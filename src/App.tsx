@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
 import { ReactComponent as PaperAirplanIcon } from './assets/icons/paper-airplane.svg';
 import importedMessages from './assets/messages.json';
@@ -220,28 +219,34 @@ const App = () => {
     } else if (userInputType === 'date') {
       return (
         <div
-          className={classNames(containerBottom, 'items-center justify-center')}
+          className={classNames(
+            containerBottom,
+            'items-center justify-center relative',
+          )}
         >
           <Button onClick={() => setIsCalendarOpen((prev) => !prev)}>
             {startDate.getTime() === endDate?.getTime()
               ? 'Select a date'
               : `${formatDate(startDate)} - ${endDate && formatDate(endDate)}`}
           </Button>
-          {isCalendarOpen && (
-            <DatePicker
-              inline
-              selected={startDate}
-              selectsRange
-              startDate={startDate}
-              endDate={endDate}
-              minDate={new Date()}
-              onChange={(dates) => {
-                const [start, end] = dates;
-                setStartDate(start!);
-                setEndDate(end!);
-              }}
-            />
-          )}
+          <div className="absolute left-0 right-0 bottom-0 flex items-center justify-center mb-10">
+            {isCalendarOpen && (
+              <DatePicker
+                inline
+                selected={startDate}
+                selectsRange
+                onClickOutside={() => setIsCalendarOpen(false)}
+                startDate={startDate}
+                endDate={endDate}
+                minDate={new Date()}
+                onChange={(dates) => {
+                  const [start, end] = dates;
+                  setStartDate(start!);
+                  setEndDate(end!);
+                }}
+              />
+            )}
+          </div>
         </div>
       );
     }
