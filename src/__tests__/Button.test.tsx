@@ -1,4 +1,3 @@
-import { expect, it } from 'vitest';
 import { render } from '@testing-library/react';
 import { Button } from '../components/Button';
 
