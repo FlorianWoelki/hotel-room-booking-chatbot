@@ -4,7 +4,7 @@ import { ReactComponent as PaperAirplanIcon } from './assets/icons/paper-airplan
 import importedMessages from './assets/messages.json';
 import { getResponse } from './chatbot';
 import { Button } from './components/Button';
-import { ChatDatePicker } from './components/ChatDatePicker';
+import { CalendarInputField } from './components/CalendarInputField';
 import { ChatError } from './components/ChatError';
 import { ChatMessage } from './components/ChatMessage';
 import { ChatWindow } from './components/ChatWindow';
@@ -38,10 +38,6 @@ const App = () => {
   const [recentAnswer, setRecentAnswer] = useState<string | undefined>();
   const [savedData, setSavedData] = useState<{ [key: string]: any }>({});
 
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
-  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
-
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
   const textMessagesRef = useRef<HTMLDivElement | null>(null);
 
@@ -74,10 +70,6 @@ const App = () => {
     return savedData[key] !== undefined;
   };
 
-  const formatDate = (date: Date): string => {
-    return date.toLocaleDateString('de-DE');
-  };
-
   useEffect(() => {
     if (!textMessagesRef.current) {
       return;
@@ -90,12 +82,16 @@ const App = () => {
   }, [messages]);
 
   useEffect(() => {
-    if (!isTyping && inputFieldRef.current) {
+    if (!isTyping) {
       setRecentAnswer(undefined);
       setIsWaitingForInput(true);
       setTimeout(() => {
-        inputFieldRef.current!.focus();
+        if (inputFieldRef.current) {
+          inputFieldRef.current.focus();
+        }
       });
+    } else {
+      setIsWaitingForInput(false);
     }
   }, [isTyping]);
 
@@ -218,36 +214,27 @@ const App = () => {
       );
     } else if (userInputType === 'date') {
       return (
-        <div
-          className={classNames(
-            containerBottom,
-            'items-center justify-center relative',
-          )}
+        <CalendarInputField
+          value={
+            !isWaitingForInput ? 'Please wait' : 'Please select a date range'
+          }
+          disabled={!isWaitingForInput}
         >
-          <Button
-            className="z-10"
-            onClick={() => setIsCalendarOpen((prev) => !prev)}
-          >
-            {!startDate ||
-            !endDate ||
-            startDate.getTime() === endDate?.getTime()
-              ? 'Select check in and check out date'
-              : `${formatDate(startDate)} - ${endDate && formatDate(endDate)}`}
-          </Button>
-          {isCalendarOpen && (
-            <div className="absolute left-0 right-0 bottom-0 flex items-center justify-center mb-16 xs:mb-12">
-              <ChatDatePicker
-                startDate={startDate}
-                endDate={endDate}
-                onClickOutside={() => setIsCalendarOpen(false)}
-                onChange={(startDate, endDate) => {
-                  setStartDate(startDate);
-                  setEndDate(endDate);
-                }}
-              ></ChatDatePicker>
-            </div>
+          {({ value, isValid, setDisplayValue }) => (
+            <button
+              type="button"
+              disabled={!isWaitingForInput || !isValid}
+              className="absolute right-0 mr-2 text-white bg-blue-500 p-2 rounded-full transition duration-150 ease-in-out hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-400"
+              onClick={(e) => {
+                e.stopPropagation();
+                submitAnswer(data, value);
+                setDisplayValue('');
+              }}
+            >
+              <PaperAirplanIcon className="w-5 h-5" />
+            </button>
           )}
-        </div>
+        </CalendarInputField>
       );
     }
 

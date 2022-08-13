@@ -5,10 +5,6 @@ const plugin = require('tailwindcss/plugin');
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    screens: {
-      xs: '425px',
-      ...defaultTheme.screens,
-    },
     extend: {
       animation: {
         'typing-indicator': '1.2s typing-dot ease-in-out infinite',

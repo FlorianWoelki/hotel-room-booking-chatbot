@@ -8,7 +8,7 @@
     ],
     "userInput": {
       "followMessageId": "greetings",
-      "type": "date",
+      "type": "text",
       "placeholder": "Enter your fullname"
     }
   },
