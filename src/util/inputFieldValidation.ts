@@ -13,10 +13,16 @@ export const mobilePhoneNumber = () => {
     .matches(mobilePhoneRegExp, 'Please enter a valid mobile phone number');
 };
 
+export const email = () => {
+  return yup.string().email('Please enter a valid email address').required();
+};
+
 export const getValidationByStr = (
   key: string | undefined,
 ): yup.AnySchema | undefined => {
   switch (key) {
+    case 'email':
+      return email();
     case 'number':
       return number();
     case 'mobilePhoneNumber':

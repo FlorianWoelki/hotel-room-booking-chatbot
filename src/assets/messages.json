@@ -65,10 +65,34 @@
     "id": "howLongStay",
     "messages": ["Wonderful! How long would you like to stay?"],
     "userInput": {
-      "followMessageId": "TBD",
-      "type": "date",
-      "validation": "date",
-      "placeholder": "TBD"
+      "followMessageId": "contactPhoneNumber",
+      "type": "date"
+    }
+  },
+  {
+    "id": "contactPhoneNumber",
+    "messages": [
+      "Now we need some contact details, so that we can contact you regarding the booking.",
+      "Please enter your phone number below."
+    ],
+    "userInput": {
+      "followMessageId": "contactEmail",
+      "type": "text",
+      "validation": "mobilePhoneNumber",
+      "placeholder": "Enter your mobile number"
+    }
+  },
+  {
+    "id": "contactEmail",
+    "messages": [
+      "Thank you $fullname 😌",
+      "Now, enter your email address, so that we can send you your booking confirmation."
+    ],
+    "userInput": {
+      "followMessageId": "contactEmail",
+      "type": "text",
+      "validation": "email",
+      "placeholder": "Enter your email address"
     }
   },
   {
