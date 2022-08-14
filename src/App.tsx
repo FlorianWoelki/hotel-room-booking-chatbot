@@ -19,7 +19,13 @@ interface Selection {
   followMessageId: string;
 }
 
-type MessageType = 'text' | 'selection' | 'freeText' | 'terminate' | 'date';
+type MessageType =
+  | 'text'
+  | 'selection'
+  | 'freeText'
+  | 'terminate'
+  | 'date'
+  | 'link';
 
 interface MessageData {
   id: string;
@@ -240,6 +246,29 @@ const App = () => {
           )}
         </CalendarInputField>
       );
+    } else if (userInputType === 'link') {
+      return (
+        <div
+          className={classNames(
+            'flex flex-wrap items-center justify-center gap-2 bg-gray-100 p-4 rounded shadow',
+            containerBottom,
+          )}
+        >
+          {isTyping ? (
+            <p className="text-gray-500">Please wait</p>
+          ) : (
+            <a href={data.userInput.href} target="_blank">
+              <Button
+                onClick={() => submitAnswer(data, data.userInput.placeholder!)}
+              >
+                {data.userInput.placeholder}
+              </Button>
+            </a>
+          )}
+        </div>
+      );
+    } else if (userInputType === 'terminate') {
+      return <p></p>;
     }
 
     return (

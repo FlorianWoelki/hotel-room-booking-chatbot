@@ -103,10 +103,47 @@
       "Now, enter your email address, so that we can send you your booking confirmation."
     ],
     "userInput": {
-      "followMessageId": "contactEmail",
+      "followMessageId": "paymentProcess",
       "type": "text",
       "validation": "email",
       "placeholder": "Enter your email address"
+    }
+  },
+  {
+    "id": "paymentProcess",
+    "messages": ["How would you like to pay?"],
+    "userInput": {
+      "type": "selection",
+      "selections": [
+        { "value": "Pay at the hotel", "followMessageId": "endOfConversation" },
+        {
+          "value": "Pay now with Credit Card",
+          "followMessageId": "payWithCreditCard"
+        }
+      ]
+    }
+  },
+  {
+    "id": "payWithCreditCard",
+    "messages": [
+      "When you click the link you will be redirected to stripe which handles all the secure payment details for us."
+    ],
+    "userInput": {
+      "type": "link",
+      "href": "https://buy.stripe.com/test_3cseWR3TO3Ht8yk9AA",
+      "placeholder": "Go to Stripe",
+      "followMessageId": "endOfConversation"
+    }
+  },
+  {
+    "id": "endOfConversation",
+    "messages": [
+      "Thank you so much!",
+      "A member of our team will be in touch with you, if there is anything left.",
+      "Have a wonderful day 😃"
+    ],
+    "userInput": {
+      "type": "terminate"
     }
   },
   {
