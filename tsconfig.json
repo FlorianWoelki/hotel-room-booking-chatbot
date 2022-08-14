@@ -18,9 +18,10 @@
     "types": [
       "vite-plugin-svgr/client",
       "@types/jest",
-      "@testing-library/jest-dom"
+      "@testing-library/jest-dom",
+      "cypress"
     ]
   },
-  "include": ["src"],
+  "include": ["src", "cypress/e2e"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
