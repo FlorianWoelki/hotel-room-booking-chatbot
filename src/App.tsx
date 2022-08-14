@@ -1,42 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
+import { MessageData, MessageType, Selection } from './@types/Message';
 
-import { ReactComponent as PaperAirplanIcon } from './assets/icons/paper-airplane.svg';
 import importedMessages from './assets/messages.json';
 import { getResponse } from './chatbot';
-import { Button } from './components/Button';
-import { CalendarInputField } from './components/CalendarInputField';
 import { ChatError } from './components/ChatError';
 import { ChatMessage } from './components/ChatMessage';
 import { ChatWindow } from './components/ChatWindow';
-import { InputField } from './components/InputField';
 import { TypingIndicator } from './components/TypingIndicator';
+import { Date } from './components/userInputTypes/Date';
+import { Link } from './components/userInputTypes/Link';
+import { Selection as SelectionComp } from './components/userInputTypes/Selection';
+import { Terminate } from './components/userInputTypes/Terminate';
+import { Text } from './components/userInputTypes/Text';
 import { useMessageTypingEffect } from './hooks/useMessageTypingEffect';
 import { classNames } from './util/classNames';
-import { getValidationByStr } from './util/inputFieldValidation';
-
-interface Selection {
-  value: string;
-  followMessageId: string;
-}
-
-type MessageType =
-  | 'text'
-  | 'selection'
-  | 'freeText'
-  | 'terminate'
-  | 'date'
-  | 'link';
-
-interface MessageData {
-  id: string;
-  messages: string[];
-  userInput: {
-    type: string;
-    followMessageId?: string;
-    placeholder?: string;
-    selections?: Selection[];
-  };
-}
 
 const App = () => {
   const [stage, setStage] = useState<number>(0);
@@ -147,10 +124,6 @@ const App = () => {
     setStage(foundMessageIndex);
   };
 
-  const submitSelection = (data: MessageData, selection: Selection): void => {
-    submitAnswer(data, selection);
-  };
-
   const getUserInput = (): JSX.Element => {
     const containerBottom = classNames('pt-4 flex mx-auto w-full');
     const data = importedMessages.at(stage);
@@ -166,109 +139,45 @@ const App = () => {
 
     if (userInputType === 'text' || userInputType === 'freeText') {
       return (
-        <InputField
+        <Text
           ref={inputFieldRef}
-          validation={getValidationByStr(data.userInput.validation)}
-          placeholder={
-            !isWaitingForInput
-              ? 'Please wait'
-              : importedMessages.at(stage)?.userInput.placeholder
-          }
-          disabled={!isWaitingForInput}
           className={containerBottom}
-          onKeyDown={(e, isValid) => {
-            if (e.key === 'Enter' && inputFieldRef.current && isValid) {
-              submitAnswer(data, inputFieldRef.current.value);
-              inputFieldRef.current.value = '';
-            }
-          }}
-        >
-          {({ isValid }) => (
-            <button
-              type="button"
-              disabled={!isWaitingForInput || !isValid}
-              className="absolute right-0 mr-2 text-white bg-blue-500 p-2 rounded-full transition duration-150 ease-in-out hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-400"
-              onClick={() => {
-                if (inputFieldRef.current) {
-                  submitAnswer(data, inputFieldRef.current.value);
-                  inputFieldRef.current.value = '';
-                }
-              }}
-            >
-              <PaperAirplanIcon className="w-5 h-5" />
-            </button>
-          )}
-        </InputField>
+          isWaitingForInput={isWaitingForInput}
+          inputFieldPlaceholder={
+            importedMessages.at(stage)?.userInput.placeholder ?? ''
+          }
+          data={data}
+          onSubmit={submitAnswer}
+        />
       );
     } else if (userInputType === 'selection') {
       return (
-        <div
-          className={classNames(
-            'flex flex-wrap items-center justify-center gap-2 bg-gray-100 p-4 rounded shadow',
-            containerBottom,
-          )}
-        >
-          {isTyping ? (
-            <p className="text-gray-500">Please wait</p>
-          ) : (
-            data?.userInput.selections?.map((selection, index) => (
-              <Button
-                key={index}
-                onClick={() => submitSelection(data, selection)}
-              >
-                {selection.value}
-              </Button>
-            ))
-          )}
-        </div>
+        <SelectionComp
+          isWaitingForInput={isWaitingForInput}
+          className={containerBottom}
+          data={data}
+          onSubmit={submitAnswer}
+        />
       );
     } else if (userInputType === 'date') {
       return (
-        <CalendarInputField
-          value={
-            !isWaitingForInput ? 'Please wait' : 'Please select a date range'
-          }
-          disabled={!isWaitingForInput}
-        >
-          {({ value, isValid, setDisplayValue }) => (
-            <button
-              type="button"
-              disabled={!isWaitingForInput || !isValid}
-              className="absolute right-0 mr-2 text-white bg-blue-500 p-2 rounded-full transition duration-150 ease-in-out hover:bg-blue-600 disabled:cursor-not-allowed disabled:bg-gray-400"
-              onClick={(e) => {
-                e.stopPropagation();
-                submitAnswer(data, value);
-                setDisplayValue('');
-              }}
-            >
-              <PaperAirplanIcon className="w-5 h-5" />
-            </button>
-          )}
-        </CalendarInputField>
+        <Date
+          isWaitingForInput={isWaitingForInput}
+          data={data}
+          onSubmit={submitAnswer}
+        />
       );
     } else if (userInputType === 'link') {
       return (
-        <div
-          className={classNames(
-            'flex flex-wrap items-center justify-center gap-2 bg-gray-100 p-4 rounded shadow',
-            containerBottom,
-          )}
-        >
-          {isTyping ? (
-            <p className="text-gray-500">Please wait</p>
-          ) : (
-            <a href={data.userInput.href} target="_blank">
-              <Button
-                onClick={() => submitAnswer(data, data.userInput.placeholder!)}
-              >
-                {data.userInput.placeholder}
-              </Button>
-            </a>
-          )}
-        </div>
+        <Link
+          className={containerBottom}
+          isWaitingForInput={isWaitingForInput}
+          data={data}
+          onSubmit={submitAnswer}
+        />
       );
     } else if (userInputType === 'terminate') {
-      return <p></p>;
+      return <Terminate />;
     }
 
     return (
