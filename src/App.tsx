@@ -36,6 +36,9 @@ const App = () => {
   const [stage, setStage] = useState<number>(0);
   const [isWaitingForInput, setIsWaitingForInput] = useState<boolean>(false);
   const [recentAnswer, setRecentAnswer] = useState<string | undefined>();
+  const [placeholderData, setPlaceholderData] = useState<{
+    [key: string]: any;
+  }>({});
   const [savedData, setSavedData] = useState<{ [key: string]: any }>({});
 
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
@@ -49,10 +52,10 @@ const App = () => {
       if (matchedPlaceholder && matchedPlaceholder.length > 0) {
         const placeholder = matchedPlaceholder[0];
         if (isKeyInSavedData(placeholder)) {
-          message = message.replace(regex, savedData[placeholder]);
+          message = message.replace(regex, placeholderData[placeholder]);
         } else {
           message = message.replace(regex, recentAnswer);
-          setSavedData((prev) => ({
+          setPlaceholderData((prev) => ({
             ...prev,
             [placeholder]: recentAnswer,
           }));
@@ -67,7 +70,7 @@ const App = () => {
     useMessageTypingEffect(stage, importedMessages, transformMessage);
 
   const isKeyInSavedData = (key: string): boolean => {
-    return savedData[key] !== undefined;
+    return placeholderData[key] !== undefined;
   };
 
   useEffect(() => {
@@ -98,6 +101,7 @@ const App = () => {
   const submitAnswer = (data: MessageData, value: string | Selection): void => {
     const message = typeof value === 'string' ? value : value.value;
 
+    setSavedData((prev) => ({ ...prev, [data.id]: message }));
     setMessages((prev) => [...prev, { value: message, type: 'user' }]);
 
     if (data.userInput.type === 'terminate') {

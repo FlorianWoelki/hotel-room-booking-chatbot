@@ -7,13 +7,13 @@
       "To get started enter your full name below."
     ],
     "userInput": {
-      "followMessageId": "greetings",
+      "followMessageId": "selectOption",
       "type": "text",
       "placeholder": "Enter your fullname"
     }
   },
   {
-    "id": "greetings",
+    "id": "selectOption",
     "messages": [
       "Hi $fullname",
       "Nice to meet you 🤝",
@@ -22,14 +22,14 @@
     "userInput": {
       "type": "selection",
       "selections": [
-        { "value": "Book a Room", "followMessageId": "bookRoom" },
+        { "value": "Book a Room", "followMessageId": "howManyAdults" },
         { "value": "Arrange a Call Back", "followMessageId": "callBack" },
         { "value": "Something else", "followMessageId": "customMessage" }
       ]
     }
   },
   {
-    "id": "bookRoom",
+    "id": "howManyAdults",
     "messages": [
       "I am glad to hear that you want to book a room at our lovely hotel!",
       "First, I need to know how many adult guests are traveling to our wonderful hotel?"
