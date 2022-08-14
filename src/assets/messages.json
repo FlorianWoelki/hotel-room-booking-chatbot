@@ -65,13 +65,27 @@
     "id": "howLongStay",
     "messages": ["Wonderful! How long would you like to stay?"],
     "userInput": {
-      "followMessageId": "contactPhoneNumber",
+      "followMessageId": "breakfastIncluded",
       "type": "date"
+    }
+  },
+  {
+    "id": "breakfastIncluded",
+    "messages": [
+      "Do you want to have a lovely and good starting breakfast in the morning (it’s really delicious 😋)?"
+    ],
+    "userInput": {
+      "type": "selection",
+      "selections": [
+        { "value": "Yes please", "followMessageId": "contactPhoneNumber" },
+        { "value": "No thank you", "followMessageId": "contactPhoneNumber" }
+      ]
     }
   },
   {
     "id": "contactPhoneNumber",
     "messages": [
+      "Thank you for answering all of those questions 😌",
       "Now we need some contact details, so that we can contact you regarding the booking.",
       "Please enter your phone number below."
     ],
