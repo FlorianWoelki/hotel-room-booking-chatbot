@@ -82,6 +82,7 @@ const App = () => {
   }, [isTyping]);
 
   const submitAnswer = (data: MessageData, value: string | Selection): void => {
+    setIsWaitingForInput(false);
     const message = typeof value === 'string' ? value : value.value;
 
     setSavedData((prev) => ({ ...prev, [data.id]: message }));
