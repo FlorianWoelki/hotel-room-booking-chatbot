@@ -9,14 +9,6 @@ import {
 } from '@testing-library/react';
 import { InputField } from '../components/InputField';
 
-beforeAll(() => {
-  jest.useFakeTimers();
-});
-
-afterAll(() => {
-  jest.useRealTimers();
-});
-
 it('should run without crashing', () => {
   render(<InputField />);
 });
