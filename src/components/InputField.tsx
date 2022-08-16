@@ -17,7 +17,9 @@ interface Props {
 
 export const InputField = forwardRef<HTMLInputElement, Props>(
   ({ className, children, onKeyDown, ...props }, ref): JSX.Element => {
-    const [isValidationValid, setIsValidationValid] = useState<boolean>(false);
+    const [isValidationValid, setIsValidationValid] = useState<boolean>(
+      props.validation === undefined,
+    );
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
       if (!props.validation) {

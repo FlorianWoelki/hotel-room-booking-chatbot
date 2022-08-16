@@ -1,12 +1,18 @@
 import { render } from '@testing-library/react';
 import {
   click,
+  keyDown,
   mouseDown,
   mouseMove,
   mouseUp,
 } from '../../test-utils/interactions';
 
-type Event = 'onClick' | 'onMouseMove' | 'onMouseUp' | 'onMouseDown';
+type Event =
+  | 'onClick'
+  | 'onMouseMove'
+  | 'onMouseUp'
+  | 'onMouseDown'
+  | 'onKeyDown';
 interface EventOptions {
   fn: (element: Document | Element | Window | Node | null) => boolean;
   checkDisabled?: boolean;
@@ -25,6 +31,9 @@ const events: { [K in Event]: EventOptions } = {
   },
   onMouseDown: {
     fn: mouseDown,
+  },
+  onKeyDown: {
+    fn: keyDown,
   },
 };
 

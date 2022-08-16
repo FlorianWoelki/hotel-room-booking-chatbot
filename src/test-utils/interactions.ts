@@ -56,3 +56,14 @@ export const mouseDown = (
   fireEvent.pointerDown(element);
   return fireEvent.mouseDown(element);
 };
+
+export const keyDown = (
+  element: Document | Element | Window | Node | null,
+  options?: { key: string },
+): boolean => {
+  if (element === null) {
+    return false;
+  }
+
+  return fireEvent.keyDown(element, options);
+};
