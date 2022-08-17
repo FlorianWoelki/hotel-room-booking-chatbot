@@ -1,12 +1,5 @@
 import * as yup from 'yup';
-import {
-  act,
-  fireEvent,
-  render,
-  RenderResult,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import { InputField } from '../components/InputField';
 
 it('should run without crashing', () => {
