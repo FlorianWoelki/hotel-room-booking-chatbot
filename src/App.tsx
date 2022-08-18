@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { MessageData, MessageType, Selection } from './@types/Message';
 
 import importedMessages from './assets/messages.json';
-import { getResponse } from './chatbot';
+import { createChatbot } from './chatbot';
 import { ChatError } from './components/ChatError';
 import { ChatMessage } from './components/ChatMessage';
 import { ChatWindow } from './components/ChatWindow';
@@ -14,6 +14,8 @@ import { Terminate } from './components/userInputTypes/Terminate';
 import { Text } from './components/userInputTypes/Text';
 import { useMessageTypingEffect } from './hooks/useMessageTypingEffect';
 import { classNames } from './util/classNames';
+
+const chatbot = createChatbot();
 
 const App = () => {
   const [stage, setStage] = useState<number>(0);
@@ -93,7 +95,7 @@ const App = () => {
     }
 
     if (data.userInput.type === 'freeText') {
-      const response = getResponse(message);
+      const response = chatbot.getResponse(message);
       addTypingMessage(response);
       return;
     }

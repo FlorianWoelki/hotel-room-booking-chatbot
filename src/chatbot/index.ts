@@ -1,49 +1,85 @@
-const messageProbability = (
-  userMessage: string[],
-  recognizedWords: string[],
-  singleResponse = false,
-  requiredWords: string[] = [],
-): number => {
-  let messageCertainty = 0;
-  let hasRequiredWords = true;
+import chatbotAnswers from '../assets/chatbotAnswers.json';
 
-  userMessage.forEach((word) => {
-    if (recognizedWords.includes(word)) {
-      messageCertainty += 1;
-    }
-  });
-
-  const percentage = messageCertainty / recognizedWords.length;
-
-  requiredWords.forEach((word) => {
-    if (!userMessage.includes(word)) {
-      hasRequiredWords = false;
-      return;
-    }
-  });
-
-  return hasRequiredWords || singleResponse ? percentage * 100 : 0;
+/**
+ * Creates a new chatbot based on the correct and unsure answers in the
+ * `assets/chatbotAnswers.json` structure.
+ *
+ * @returns {FreeTextChatbot} A new instance of the free text chatbot.
+ */
+export const createChatbot = (): FreeTextChatbot => {
+  return new FreeTextChatbot(
+    chatbotAnswers.answers,
+    chatbotAnswers.unsureAnswers,
+  );
 };
 
-const findMaxProbabilityKey = (map: {
-  [key: string]: number;
-}): string | null => {
-  let maxProbabilityKey: string | null = null;
-  let maxProbability: number = 0;
-  Object.entries(map).forEach(([key, probability]) => {
-    if (maxProbability < probability) {
-      maxProbability = probability;
-      maxProbabilityKey = key;
-    }
-  });
+interface ChatbotAnswer {
+  botResponse: string | string[];
+  listOfWords: string[];
+  singleResponse?: boolean;
+  requiredWords?: string[];
+}
 
-  return maxProbabilityKey;
-};
+export default class FreeTextChatbot {
+  private answers: ChatbotAnswer[];
+  private unsureAnswers: string[];
+  private probabilityMap: { [key: string]: number } = {};
 
-const checkAllMessages = (message: string[]): string | null => {
-  const probabilityMap: { [key: string]: number } = {};
+  constructor(answers: ChatbotAnswer[], unsureAnswers: string[]) {
+    this.answers = answers;
+    this.unsureAnswers = unsureAnswers;
+  }
 
-  const createResponse = (
+  private messageProbability = (
+    userMessage: string[],
+    recognizedWords: string[],
+    singleResponse = false,
+    requiredWords: string[] = [],
+  ): number => {
+    let messageCertainty = 0;
+    let hasRequiredWords = true;
+
+    userMessage.forEach((word) => {
+      if (recognizedWords.includes(word)) {
+        messageCertainty += 1;
+      }
+    });
+
+    const percentage = messageCertainty / recognizedWords.length;
+
+    requiredWords.forEach((word) => {
+      if (!userMessage.includes(word)) {
+        hasRequiredWords = false;
+        return;
+      }
+    });
+
+    return hasRequiredWords || singleResponse ? percentage * 100 : 0;
+  };
+
+  private findMaxProbabilityKey = (map: {
+    [key: string]: number;
+  }): string | null => {
+    let maxProbabilityKey: string | null = null;
+    let maxProbability: number = 0;
+    Object.entries(map).forEach(([key, probability]) => {
+      if (maxProbability < probability) {
+        maxProbability = probability;
+        maxProbabilityKey = key;
+      }
+    });
+
+    return maxProbabilityKey;
+  };
+
+  private randomUnsureMessage = (): string => {
+    return this.unsureAnswers[
+      Math.floor(Math.random() * this.unsureAnswers.length)
+    ];
+  };
+
+  private createResponse = (
+    message: string[],
     botResponse: string | string[],
     listOfWords: string[],
     singleResponse = false,
@@ -57,7 +93,7 @@ const checkAllMessages = (message: string[]): string | null => {
       randomBotResponse = botResponse;
     }
 
-    probabilityMap[randomBotResponse] = messageProbability(
+    this.probabilityMap[randomBotResponse] = this.messageProbability(
       message,
       listOfWords,
       singleResponse,
@@ -65,23 +101,30 @@ const checkAllMessages = (message: string[]): string | null => {
     );
   };
 
-  createResponse(
-    ['Hello!', 'Hi, how can I help you?', 'Hello there 😀'],
-    ['hello', 'hi', 'hey'],
-    true,
-  );
+  private checkAllMessages = (message: string[]): string | null => {
+    this.probabilityMap = {};
 
-  const bestMatch = findMaxProbabilityKey(probabilityMap);
-  return bestMatch && probabilityMap[bestMatch] ? bestMatch : null;
-};
+    this.answers.forEach((answer) => {
+      this.createResponse(
+        message,
+        answer.botResponse,
+        answer.listOfWords,
+        answer.singleResponse,
+        answer.requiredWords,
+      );
+    });
 
-const randomUnsureMessage = (): string => {
-  const items: string[] = ['I am not sure, what that means 😔'];
-  return items[Math.floor(Math.random() * items.length)];
-};
+    const bestMatch = this.findMaxProbabilityKey(this.probabilityMap);
+    return bestMatch && this.probabilityMap[bestMatch] ? bestMatch : null;
+  };
 
-export const getResponse = (userInput: string): string => {
-  const splitMessage = userInput.toLowerCase().split(/\s+|[,;?!.-]\s*/g);
-  const response = checkAllMessages(splitMessage);
-  return response ?? randomUnsureMessage();
-};
+  public addAnswer = (answer: ChatbotAnswer) => {
+    this.answers.push(answer);
+  };
+
+  public getResponse = (userInput: string): string => {
+    const splitMessage = userInput.toLowerCase().split(/\s+|[,;?!.-]\s*/g);
+    const response = this.checkAllMessages(splitMessage);
+    return response ?? this.randomUnsureMessage();
+  };
+}

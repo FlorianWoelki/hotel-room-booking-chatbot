@@ -1,0 +1,11 @@
+{
+  "answers": [
+    {
+      "botResponse": ["Hello!", "Hi, how can I help you?", "Hello there 😀"],
+      "listOfWords": ["hello", "hi", "hey"],
+      "singleResponse": true,
+      "requiredWords": []
+    }
+  ],
+  "unsureAnswers": ["I am not sure, what that means 😔"]
+}
