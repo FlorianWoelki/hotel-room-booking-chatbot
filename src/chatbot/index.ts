@@ -40,7 +40,7 @@ export default class FreeTextChatbot {
     let hasRequiredWords = true;
 
     userMessage.forEach((word) => {
-      if (recognizedWords.includes(word)) {
+      if (recognizedWords.includes(word.toLowerCase())) {
         messageCertainty += 1;
       }
     });
@@ -48,7 +48,7 @@ export default class FreeTextChatbot {
     const percentage = messageCertainty / recognizedWords.length;
 
     requiredWords.forEach((word) => {
-      if (!userMessage.includes(word)) {
+      if (!userMessage.includes(word.toLowerCase())) {
         hasRequiredWords = false;
         return;
       }
