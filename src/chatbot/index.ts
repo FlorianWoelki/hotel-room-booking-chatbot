@@ -23,17 +23,39 @@ interface ChatbotAnswer {
 export default class FreeTextChatbot {
   private answers: ChatbotAnswer[];
   private unsureAnswers: string[];
+  // Defines the probability map that is used to determine the answer the bot
+  // should answer with.
   private probabilityMap: { [key: string]: number } = {};
 
+  /**
+   * Creates a new `FreeTextChatbot` with the specified `answers` and
+   * `unsureAnswers`. Use `createChatbot` for using the data defined in the
+   * `chatbotAnswers` file.
+   *
+   * @param {ChatbotAnswer[]} answers The possible chatbot answers.
+   * @param {string[]} unsureAnswers The possible unsure chatbot answers.
+   */
   constructor(answers: ChatbotAnswer[], unsureAnswers: string[]) {
     this.answers = answers;
     this.unsureAnswers = unsureAnswers;
   }
 
+  /**
+   * Returns the message probability of a given sentence that was provided by
+   * the user. This function can expect the `singleResponse` and `requiredWords`
+   * parameters, which are both necessary, when there should be a required word
+   * in the sentence to calculate the proper probability.
+   *
+   * @param {string[]} userMessage The user message splitted into words.
+   * @param {string[]} recognizedWords The recognized words for the chatbot.
+   * @param {boolean} [singleResponse] When the response should be in a single response.
+   * @param {string[]} [requiredWords] The required words that should occur in the sentence.
+   * @returns {number} Probability of the message occurrence.
+   */
   private messageProbability = (
     userMessage: string[],
     recognizedWords: string[],
-    singleResponse = false,
+    singleResponse: boolean = false,
     requiredWords: string[] = [],
   ): number => {
     let messageCertainty = 0;
@@ -57,12 +79,16 @@ export default class FreeTextChatbot {
     return hasRequiredWords || singleResponse ? percentage * 100 : 0;
   };
 
-  private findMaxProbabilityKey = (map: {
-    [key: string]: number;
-  }): string | null => {
+  /**
+   * Returns the max probability key in the `probabilityMap` of the chatbot
+   * class. If the max probability was not found, null will be returned.
+   *
+   * @returns {string | null} The max probability in the `probabilityMap`.
+   */
+  private findMaxProbabilityKey = (): string | null => {
     let maxProbabilityKey: string | null = null;
     let maxProbability: number = 0;
-    Object.entries(map).forEach(([key, probability]) => {
+    Object.entries(this.probabilityMap).forEach(([key, probability]) => {
       if (maxProbability < probability) {
         maxProbability = probability;
         maxProbabilityKey = key;
@@ -72,19 +98,36 @@ export default class FreeTextChatbot {
     return maxProbabilityKey;
   };
 
+  /**
+   * Returns a random unsure message from the `unsureAnswers` array.
+   *
+   * @returns {string} Random unsure message from the `unsureAnswers` array.
+   */
   private randomUnsureMessage = (): string => {
     return this.unsureAnswers[
       Math.floor(Math.random() * this.unsureAnswers.length)
     ];
   };
 
+  /**
+   * Creates a response that will calculate a random response and calculates
+   * then the overall message probability that this response will be sent to
+   * the user.
+   *
+   * @param {string[]} message The split up message into words.
+   * @param {string | string[]} botResponse What the possible responses of the bot are.
+   * @param {string[]} listOfWords The list of words to recognize the message.
+   * @param {boolean} [singleResponse] When the response should be in a single response.
+   * @param {string[]} [requiredWords] The required words that should occur in the sentence.
+   * @returns {void}
+   */
   private createResponse = (
     message: string[],
     botResponse: string | string[],
     listOfWords: string[],
-    singleResponse = false,
+    singleResponse: boolean = false,
     requiredWords: string[] = [],
-  ) => {
+  ): void => {
     let randomBotResponse: string = '';
     if (Array.isArray(botResponse)) {
       randomBotResponse =
@@ -93,6 +136,8 @@ export default class FreeTextChatbot {
       randomBotResponse = botResponse;
     }
 
+    // Inserts the bot response with the message probability to the
+    // `probabilityMap` object.
     this.probabilityMap[randomBotResponse] = this.messageProbability(
       message,
       listOfWords,
@@ -101,6 +146,15 @@ export default class FreeTextChatbot {
     );
   };
 
+  /**
+   * Checks all messages that belong to the `answers` array. This function will
+   * return the string with the best match by creating all the possible
+   * responses of the chatbot and then calculating the max probability. The
+   * response with the max probability will be returned.
+   *
+   * @param {string[]} message The user message split up into words.
+   * @returns {string | null} The best match or `null`.
+   */
   private checkAllMessages = (message: string[]): string | null => {
     this.probabilityMap = {};
 
@@ -114,14 +168,27 @@ export default class FreeTextChatbot {
       );
     });
 
-    const bestMatch = this.findMaxProbabilityKey(this.probabilityMap);
+    const bestMatch = this.findMaxProbabilityKey();
     return bestMatch && this.probabilityMap[bestMatch] ? bestMatch : null;
   };
 
-  public addAnswer = (answer: ChatbotAnswer) => {
+  /**
+   * Adds an answer to the chatbot `answers` array.
+   *
+   * @param {ChatbotAnswer} answer The answer for the chatbot.
+   * @returns {void}
+   */
+  public addAnswer = (answer: ChatbotAnswer): void => {
     this.answers.push(answer);
   };
 
+  /**
+   * Returns a possible unsure or correct answer to a message that the user
+   * has specified.
+   *
+   * @param {string} userInput The message of the user.
+   * @returns {string} The response of the chatbot to the message.
+   */
   public getResponse = (userInput: string): string => {
     const splitMessage = userInput.toLowerCase().split(/\s+|[,;?!.-]\s*/g);
     const response = this.checkAllMessages(splitMessage);

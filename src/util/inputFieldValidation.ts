@@ -1,4 +1,7 @@
 import * as yup from 'yup';
+import { RequiredNumberSchema } from 'yup/lib/number';
+import { RequiredStringSchema } from 'yup/lib/string';
+import { AnyObject } from 'yup/lib/types';
 
 const mobilePhoneRegExp =
   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
@@ -8,7 +11,10 @@ const mobilePhoneRegExp =
  *
  * @returns {RequiredNumberSchema<number | undefined, AnyObject>} The returned yup validation schema.
  */
-export const number = () => {
+export const number = (): RequiredNumberSchema<
+  number | undefined,
+  AnyObject
+> => {
   return yup.number().required();
 };
 
@@ -17,7 +23,10 @@ export const number = () => {
  *
  * @returns {RequiredStringSchema<string | undefined, AnyObject>} The returned yup validation schema.
  */
-export const mobilePhoneNumber = () => {
+export const mobilePhoneNumber = (): RequiredStringSchema<
+  string | undefined,
+  AnyObject
+> => {
   return yup
     .string()
     .matches(mobilePhoneRegExp, 'Please enter a valid mobile phone number')
@@ -29,14 +38,17 @@ export const mobilePhoneNumber = () => {
  *
  * @returns {RequiredStringSchema<string | undefined, AnyObject>} The returned yup validation schema.
  */
-export const email = () => {
+export const email = (): RequiredStringSchema<
+  string | undefined,
+  AnyObject
+> => {
   return yup.string().email('Please enter a valid email address').required();
 };
 
 /**
  * Gets a predefined yup validation schema of a specific key.
  *
- * @param key - The key to get the validation schema.
+ * @param key The key to get the validation schema.
  * @returns {string | undefined} The validation schema.
  */
 export const getValidationByStr = (

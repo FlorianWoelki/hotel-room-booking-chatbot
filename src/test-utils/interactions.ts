@@ -1,5 +1,12 @@
 import { fireEvent } from '@testing-library/dom';
 
+/**
+ * Fires a test event for the `click` functionality. This function simulates
+ * a simple click event of a user for a specific element.
+ *
+ * @param {Document | Element | Window | Node | null} element The element that will be clicked on.
+ * @returns {boolean} If the action was successful.
+ */
 export const click = (
   element: Document | Element | Window | Node | null,
 ): boolean => {
@@ -24,6 +31,13 @@ export const click = (
   return fireEvent.click(element);
 };
 
+/**
+ * Fires a test event for the `mouseMove` functionality. This function simulates
+ * a simple mouse move event of a user for a specific element.
+ *
+ * @param {Document | Element | Window | Node | null} element The element where the mouse will be moved on.
+ * @returns {boolean} If the action was successful.
+ */
 export const mouseMove = (
   element: Document | Element | Window | Node | null,
 ): boolean => {
@@ -35,6 +49,13 @@ export const mouseMove = (
   return fireEvent.mouseMove(element);
 };
 
+/**
+ * Fires a test event for the `mouseUp` functionality. This function simulates
+ * a simple mouse up event of a user for a specific element.
+ *
+ * @param {Document | Element | Window | Node | null} element The element where the mouse will be moved and upped on.
+ * @returns {boolean} If the action was successful.
+ */
 export const mouseUp = (
   element: Document | Element | Window | Node | null,
 ): boolean => {
@@ -46,6 +67,13 @@ export const mouseUp = (
   return fireEvent.mouseUp(element);
 };
 
+/**
+ * Fires a test event for the `mouseDown` functionality. This function simulates
+ * a simple mouse down event of a user for a specific element.
+ *
+ * @param {Document | Element | Window | Node | null} element The element where the mouse will be downed on.
+ * @returns {boolean} If the action was successful.
+ */
 export const mouseDown = (
   element: Document | Element | Window | Node | null,
 ): boolean => {
