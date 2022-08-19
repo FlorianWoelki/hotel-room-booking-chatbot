@@ -2,7 +2,17 @@ import { UserInputTypeProps } from '../../@types/UserInputType';
 import { classNames } from '../../util/classNames';
 import { Button } from '../Button';
 
-export const Selection: React.FC<UserInputTypeProps> = (props): JSX.Element => {
+/**
+ * Renders a selection list for the user that is highly specific to the
+ * application of the chatbot. This component renders multiple buttons that are
+ * based on `data.userInput.selections`.
+ *
+ * @param {UserInputTypeProps} props The Selection props.
+ * @returns {JSX.Element} The rendered Selection list.
+ */
+export const Selection: React.FC<UserInputTypeProps> = (
+  props: UserInputTypeProps,
+): JSX.Element => {
   return (
     <div
       className={classNames(

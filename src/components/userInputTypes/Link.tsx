@@ -2,7 +2,17 @@ import { UserInputTypeProps } from '../../@types/UserInputType';
 import { classNames } from '../../util/classNames';
 import { Button } from '../Button';
 
-export const Link: React.FC<UserInputTypeProps> = (props): JSX.Element => {
+/**
+ * Renders a link user button that is highly specific to the application
+ * of the chatbot. This component renders a button which contains a link to the
+ * specified prop `data.userInput.href`.
+ *
+ * @param {UserInputTypeProps} props The link props.
+ * @returns {JSX.Element} The rendered Link.
+ */
+export const Link: React.FC<UserInputTypeProps> = (
+  props: UserInputTypeProps,
+): JSX.Element => {
   return (
     <div
       className={classNames(

@@ -4,14 +4,28 @@ import { classNames } from '../util/classNames';
 interface Props {
   children: React.ReactNode | React.ReactNode[];
   className?: string;
+  /**
+   * Fires when the button was clicked.
+   *
+   * @param {MouseEvent} event The event of this action.
+   * @returns {void}
+   */
   onClick?: (event: MouseEvent) => void;
 }
 
+/**
+ * Represents a simple button that is styled properly. This component appends
+ * all props excluding `children` and `className` to the first child element
+ * of this component.
+ *
+ * @param {Props} props The props of the Button
+ * @returns {JSX.Element} The rendered button.
+ */
 export const Button: React.FC<Props> = ({
   children,
   className,
   ...props
-}): JSX.Element => {
+}: Props): JSX.Element => {
   return (
     <button
       type="button"

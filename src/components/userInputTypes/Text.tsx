@@ -5,9 +5,21 @@ import { forwardRef } from 'react';
 import { SendButton } from '../SendButton';
 
 interface TextProps {
+  /**
+   * The input field placeholder that will be used in the input field.
+   */
   inputFieldPlaceholder: string;
 }
 
+/**
+ * Renders a text or input field for the user that is highly specific to the
+ * application of the chatbot. This component renders an input field with a
+ * send button where the user can type a message in.
+ * In addition, this component expects a `ref` that is passed to this
+ * component.
+ *
+ * @returns {JSX.Element} The rendered Selection list.
+ */
 export const Text = forwardRef<
   HTMLInputElement,
   UserInputTypeProps & TextProps
