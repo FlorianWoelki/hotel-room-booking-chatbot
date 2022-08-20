@@ -25,6 +25,7 @@ export const Selection: React.FC<UserInputTypeProps> = (
       ) : (
         props.data?.userInput.selections?.map((selection, index) => (
           <Button
+            data-cy={`user-selection-${index}`}
             key={index}
             onClick={() => props.onSubmit?.(props.data, selection)}
           >

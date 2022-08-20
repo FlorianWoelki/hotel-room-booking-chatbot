@@ -241,6 +241,7 @@ const App = () => {
           {messages.map((message, index) => (
             <ChatMessage
               key={index}
+              data-cy={`chat-message-${message.type}`}
               position={message.type === 'bot' ? 'left' : 'right'}
             >
               {message.value}

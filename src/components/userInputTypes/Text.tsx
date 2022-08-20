@@ -27,6 +27,7 @@ export const Text = forwardRef<
   return (
     <InputField
       ref={ref}
+      data-cy="text-input-field"
       validation={getValidationByStr(props.data.userInput.validation)}
       placeholder={
         !props.isWaitingForInput ? 'Please wait' : props.inputFieldPlaceholder
@@ -47,6 +48,7 @@ export const Text = forwardRef<
     >
       {({ isValid }) => (
         <SendButton
+          data-cy="text-send-button"
           disabled={!props.isWaitingForInput || !isValid}
           onClick={() => {
             if (ref !== null && typeof ref !== 'function') {
