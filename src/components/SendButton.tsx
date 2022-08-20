@@ -1,12 +1,28 @@
 import { MouseEvent } from 'react';
 import { ReactComponent as PaperAirplanIcon } from '../assets/icons/paper-airplane.svg';
 
-interface SendButtonProps {
+interface Props {
+  /**
+   * When the send button will be disabled.
+   */
   disabled?: boolean;
+  /**
+   * Fires when the button is pressed.
+   *
+   * @param {MouseEvent} e The event of the click event.
+   * @returns {void}
+   */
   onClick?: (e: MouseEvent) => void;
 }
 
-export const SendButton: React.FC<SendButtonProps> = (props): JSX.Element => {
+/**
+ * Renders a simple send button that will contain an airplan icon which
+ * visualizes the send button.
+ *
+ * @param {Props} props The passed in send button props.
+ * @returns {JSX.Element} The rendered send button component.
+ */
+export const SendButton: React.FC<Props> = (props: Props): JSX.Element => {
   return (
     <button
       type="button"
