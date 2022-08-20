@@ -27,10 +27,10 @@ interface MessageTypingEffect {
   /**
    * Sets the messages of the hooks.
    *
-   * @param {Message[]} messages The new messages that will be used for the typing effect.
+   * @param {React.SetStateAction<Message[]>} messages The new messages that will be used for the typing effect.
    * @return {void}
    */
-  setMessages: (messages: Message[]) => void;
+  setMessages: (messages: React.SetStateAction<Message[]>) => void;
   /**
    * Adds a typing message that will optionally transformed and added to the
    * queue of all the messages.

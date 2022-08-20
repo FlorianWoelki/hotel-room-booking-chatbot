@@ -21,14 +21,32 @@ const App = () => {
   const [stage, setStage] = useState<number>(0);
   const [isWaitingForInput, setIsWaitingForInput] = useState<boolean>(false);
   const [recentAnswer, setRecentAnswer] = useState<string | undefined>();
+
+  /**
+   * Defines the data that was defined by the user. This state is used to
+   * personalize the chatbot through placeholder values like `$firstname`.
+   */
   const [placeholderData, setPlaceholderData] = useState<{
     [key: string]: any;
   }>({});
+
+  /**
+   * This data will contain all the taken steps from the user.
+   * This can be used to follow up with database insertion.
+   */
   const [savedData, setSavedData] = useState<{ [key: string]: any }>({});
 
   const inputFieldRef = useRef<HTMLInputElement | null>(null);
   const textMessagesRef = useRef<HTMLDivElement | null>(null);
 
+  /**
+   * This function will transform in a message and check if a used placeholder
+   * is in the message. If it is, it will be replaced with the actual value
+   * that was defined by the user.
+   *
+   * @param {string} message The message that will be transformed.
+   * @returns {string} The transformed message.
+   */
   const transformMessage = (message: string): string => {
     if (recentAnswer) {
       const regex = /\$\w+/g;
@@ -36,7 +54,7 @@ const App = () => {
 
       if (matchedPlaceholder && matchedPlaceholder.length > 0) {
         const placeholder = matchedPlaceholder[0];
-        if (isKeyInSavedData(placeholder)) {
+        if (placeholderData[placeholder] !== undefined) {
           message = message.replace(regex, placeholderData[placeholder]);
         } else {
           message = message.replace(regex, recentAnswer);
@@ -54,15 +72,12 @@ const App = () => {
   const { isTyping, messages, setMessages, addTypingMessage } =
     useMessageTypingEffect(stage, importedMessages, transformMessage);
 
-  const isKeyInSavedData = (key: string): boolean => {
-    return placeholderData[key] !== undefined;
-  };
-
   useEffect(() => {
     if (!textMessagesRef.current) {
       return;
     }
 
+    // Sets a timeout to fix issue of clipping the scroll to the bottom.
     setTimeout(() => {
       textMessagesRef.current!.scrollTop =
         textMessagesRef.current!.scrollHeight;
@@ -73,6 +88,8 @@ const App = () => {
     if (!isTyping) {
       setRecentAnswer(undefined);
       setIsWaitingForInput(true);
+      // Sets timeout to really focus the input field.
+      // Could be the case that it is not focusable in the beginning.
       setTimeout(() => {
         if (inputFieldRef.current) {
           inputFieldRef.current.focus();
@@ -83,6 +100,17 @@ const App = () => {
     }
   }, [isTyping]);
 
+  /**
+   * This function will submit the answer and process a possible response.
+   * Whenever the user input type is of type `freeText`, it will use the chatbot
+   * functionality to chat with the user.
+   * If not, it will try to find the follow up message id that will be used
+   * to display the next message.
+   *
+   * @param {MessageData} data The data of the message
+   * @param {string | Selection} value The message value or selected option.
+   * @returns {void}
+   */
   const submitAnswer = (data: MessageData, value: string | Selection): void => {
     setIsWaitingForInput(false);
     const message = typeof value === 'string' ? value : value.value;
@@ -101,6 +129,8 @@ const App = () => {
     }
 
     let foundMessageIndex = -1;
+
+    // Whenever the `followMessageId` is in the value object directly.
     if (
       !data.userInput.followMessageId &&
       typeof value === 'object' &&
@@ -111,6 +141,7 @@ const App = () => {
       );
     }
 
+    // Whenever the `followMessageId` is in the user input.
     if (foundMessageIndex === -1) {
       foundMessageIndex = importedMessages.findIndex(
         (message) => message.id === data.userInput.followMessageId,
@@ -127,6 +158,13 @@ const App = () => {
     setStage(foundMessageIndex);
   };
 
+  /**
+   * Gets the user input by checking on the `userInputType` in the message data.
+   * This function will return the correct component that can be used to
+   * create a user input field.
+   *
+   * @returns {JSX.Element} The rendered user input component.
+   */
   const getUserInput = (): JSX.Element => {
     const containerBottom = classNames('pt-4 flex mx-auto w-full');
     const data = importedMessages.at(stage);
@@ -140,47 +178,50 @@ const App = () => {
       );
     }
 
-    if (userInputType === 'text' || userInputType === 'freeText') {
-      return (
-        <Text
-          ref={inputFieldRef}
-          className={containerBottom}
-          isWaitingForInput={isWaitingForInput}
-          inputFieldPlaceholder={
-            importedMessages.at(stage)?.userInput.placeholder ?? ''
-          }
-          data={data}
-          onSubmit={submitAnswer}
-        />
-      );
-    } else if (userInputType === 'selection') {
-      return (
-        <SelectionComp
-          isWaitingForInput={isWaitingForInput}
-          className={containerBottom}
-          data={data}
-          onSubmit={submitAnswer}
-        />
-      );
-    } else if (userInputType === 'date') {
-      return (
-        <Date
-          isWaitingForInput={isWaitingForInput}
-          data={data}
-          onSubmit={submitAnswer}
-        />
-      );
-    } else if (userInputType === 'link') {
-      return (
-        <Link
-          className={containerBottom}
-          isWaitingForInput={isWaitingForInput}
-          data={data}
-          onSubmit={submitAnswer}
-        />
-      );
-    } else if (userInputType === 'terminate') {
-      return <Terminate />;
+    switch (userInputType) {
+      case 'text':
+      case 'freeText':
+        return (
+          <Text
+            ref={inputFieldRef}
+            className={containerBottom}
+            isWaitingForInput={isWaitingForInput}
+            inputFieldPlaceholder={
+              importedMessages.at(stage)?.userInput.placeholder ?? ''
+            }
+            data={data}
+            onSubmit={submitAnswer}
+          />
+        );
+      case 'selection':
+        return (
+          <SelectionComp
+            isWaitingForInput={isWaitingForInput}
+            className={containerBottom}
+            data={data}
+            onSubmit={submitAnswer}
+          />
+        );
+      case 'date':
+        return (
+          <Date
+            isWaitingForInput={isWaitingForInput}
+            data={data}
+            onSubmit={submitAnswer}
+          />
+        );
+      case 'link':
+        return (
+          <Link
+            className={containerBottom}
+            isWaitingForInput={isWaitingForInput}
+            data={data}
+            onSubmit={submitAnswer}
+          />
+        );
+      case 'terminate':
+        return <Terminate />;
+      default:
     }
 
     return (
