@@ -82,7 +82,7 @@ const App = () => {
       textMessagesRef.current!.scrollTop =
         textMessagesRef.current!.scrollHeight;
     });
-  }, [messages]);
+  }, [messages, isWaitingForInput]);
 
   useEffect(() => {
     if (!isTyping) {
