@@ -68,7 +68,7 @@ export const InputField = forwardRef<HTMLInputElement, Props>(
 
     useEffect(() => {
       // Resets the validation.
-      setIsValidationValid(false);
+      setIsValidationValid(props.validation === undefined);
     }, [props.validation]);
 
     /**
