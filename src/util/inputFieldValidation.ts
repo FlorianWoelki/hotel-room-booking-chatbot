@@ -46,6 +46,15 @@ export const email = (): RequiredStringSchema<
 };
 
 /**
+ * Defines and returns a required string yup validation schema.
+ *
+ * @returns {RequiredStringSchema<string | undefined, AnyObject>} The returned yup validation schema.
+ */
+export const text = (): RequiredStringSchema<string | undefined, AnyObject> => {
+  return yup.string().required();
+};
+
+/**
  * Gets a predefined yup validation schema of a specific key.
  *
  * @param key The key to get the validation schema.
@@ -55,6 +64,8 @@ export const getValidationByStr = (
   key: string | undefined,
 ): yup.AnySchema | undefined => {
   switch (key) {
+    case 'text':
+      return text();
     case 'email':
       return email();
     case 'number':

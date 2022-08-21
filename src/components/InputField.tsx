@@ -1,5 +1,11 @@
 import * as yup from 'yup';
-import React, { ChangeEvent, forwardRef, KeyboardEvent, useState } from 'react';
+import React, {
+  ChangeEvent,
+  forwardRef,
+  KeyboardEvent,
+  useEffect,
+  useState,
+} from 'react';
 import { classNames } from '../util/classNames';
 
 interface ChildrenCallback {
@@ -59,6 +65,11 @@ export const InputField = forwardRef<HTMLInputElement, Props>(
     const [isValidationValid, setIsValidationValid] = useState<boolean>(
       props.validation === undefined,
     );
+
+    useEffect(() => {
+      // Resets the validation.
+      setIsValidationValid(false);
+    }, [props.validation]);
 
     /**
      * Handles the change of the input field. This function will validate the

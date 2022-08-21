@@ -9,6 +9,7 @@
     "userInput": {
       "followMessageId": "selectOption",
       "type": "text",
+      "validation": "text",
       "placeholder": "Enter your fullname"
     }
   },
