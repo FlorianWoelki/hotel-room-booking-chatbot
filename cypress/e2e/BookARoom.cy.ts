@@ -114,6 +114,10 @@ describe('BookARoom', () => {
           .last()
           .should('have.text', 'Go to Stripe');
       });
+
+      it('should end conversation', () => {
+        cy.dataCy('chat-window').children().should('have.length', 1);
+      });
     });
   });
 });

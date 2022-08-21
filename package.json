@@ -9,7 +9,8 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
-    "e2e": "yarn cypress open"
+    "e2e": "yarn cypress open",
+    "e2e:headless": "yarn cypress run"
   },
   "dependencies": {
     "react": "^18.2.0",
