@@ -16,8 +16,7 @@ describe('ArrangeCallback', () => {
         it('should select `Arrange a Call Back` option', () => {
           cy.dataCy('chat-window').children().should('have.length', 2);
           // Click and verify last user selection.
-          cy.dataCy('user-selection-1').should('exist');
-          cy.dataCy('user-selection-1').click();
+          cy.dataCy('user-selection-1').should('exist').click();
           cy.dataCy('chat-message-user')
             .last()
             .should('have.text', 'Arrange a Call Back');
@@ -29,8 +28,7 @@ describe('ArrangeCallback', () => {
         it('should select `General Enquiry` option', () => {
           cy.dataCy('chat-window').children().should('have.length', 2);
           // Click and verify last user selection.
-          cy.dataCy('user-selection-1').should('exist');
-          cy.dataCy('user-selection-1').click();
+          cy.dataCy('user-selection-1').should('exist').click();
           cy.dataCy('chat-message-user')
             .last()
             .should('have.text', 'General Enquiry');
@@ -49,8 +47,7 @@ describe('ArrangeCallback', () => {
           cy.dataCy('chat-window').children().should('have.length', 2);
           const phoneNumber = '+491515151515';
           cy.dataCy('text-input-field').clear().type(phoneNumber);
-          cy.dataCy('text-send-button').should('not.be.disabled');
-          cy.dataCy('text-send-button').click();
+          cy.dataCy('text-send-button').should('not.be.disabled').click();
           cy.dataCy('chat-message-user')
             .last()
             .should('have.text', phoneNumber);
@@ -77,8 +74,7 @@ describe('ArrangeCallback', () => {
         it('should select `Arrange a Call Back` option', () => {
           cy.dataCy('chat-window').children().should('have.length', 2);
           // Click and verify last user selection.
-          cy.dataCy('user-selection-1').should('exist');
-          cy.dataCy('user-selection-1').click();
+          cy.dataCy('user-selection-1').should('exist').click();
           cy.dataCy('chat-message-user')
             .last()
             .should('have.text', 'Arrange a Call Back');
@@ -90,8 +86,7 @@ describe('ArrangeCallback', () => {
         it('should select `Room Booking` option', () => {
           cy.dataCy('chat-window').children().should('have.length', 2);
           // Click and verify last user selection.
-          cy.dataCy('user-selection-0').should('exist');
-          cy.dataCy('user-selection-0').click();
+          cy.dataCy('user-selection-0').should('exist').click();
           cy.dataCy('chat-message-user')
             .last()
             .should('have.text', 'Room Booking');
@@ -110,8 +105,7 @@ describe('ArrangeCallback', () => {
           cy.dataCy('chat-window').children().should('have.length', 2);
           const phoneNumber = '+491515151515';
           cy.dataCy('text-input-field').clear().type(phoneNumber);
-          cy.dataCy('text-send-button').should('not.be.disabled');
-          cy.dataCy('text-send-button').click();
+          cy.dataCy('text-send-button').should('not.be.disabled').click();
           cy.dataCy('chat-message-user')
             .last()
             .should('have.text', phoneNumber);

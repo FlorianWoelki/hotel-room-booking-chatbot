@@ -87,6 +87,7 @@ export const CalendarInputField: React.FC<Props> = (
   return (
     <div className="relative">
       <div
+        data-cy="calendar-input-field"
         className={classNames(
           'flex items-center relative py-4 pl-6 pr-12 shadow rounded-full border border-gray-100 cursor-pointer',
           props.disabled && 'cursor-not-allowed bg-gray-100',

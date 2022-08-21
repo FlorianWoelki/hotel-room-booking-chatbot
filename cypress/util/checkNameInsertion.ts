@@ -18,8 +18,9 @@ export const checkNameInsertion = (): void => {
     const name = 'Test User Name';
     cy.dataCy('text-input-field').type(name);
     cy.dataCy('text-send-button').click();
-    cy.dataCy('chat-message-user').should('have.length', 1);
-    cy.dataCy('chat-message-user').should('contain.text', name);
+    cy.dataCy('chat-message-user')
+      .should('have.length', 1)
+      .should('contain.text', name);
 
     // Get response of chatbot with inserted value.
     cy.dataCy('chat-message-bot').should('contain.text', name);

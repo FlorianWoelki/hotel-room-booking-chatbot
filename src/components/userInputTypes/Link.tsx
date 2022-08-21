@@ -15,6 +15,7 @@ export const Link: React.FC<UserInputTypeProps> = (
 ): JSX.Element => {
   return (
     <div
+      data-cy="user-input-link"
       className={classNames(
         'flex flex-wrap items-center justify-center gap-2 bg-gray-100 p-4 rounded shadow',
         props.className,

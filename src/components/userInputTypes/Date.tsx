@@ -37,6 +37,7 @@ export const Date: React.FC<UserInputTypeProps & DateProps> = (
     <CalendarInputField value={getValue()} disabled={!props.isWaitingForInput}>
       {({ value, isValid, setDisplayValue }) => (
         <SendButton
+          data-cy="date-send-button"
           disabled={!props.isWaitingForInput || !isValid}
           onClick={(e) => {
             e.stopPropagation();

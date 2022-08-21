@@ -44,6 +44,7 @@ export const ChatDatePicker: React.FC<Props> = (props: Props): JSX.Element => {
   return (
     <>
       <button
+        data-cy="chat-date-picker-outside-button"
         type="button"
         className="fixed inset-0 cursor-default outline-none"
         tabIndex={-1}
