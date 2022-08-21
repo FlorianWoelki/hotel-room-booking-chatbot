@@ -46,7 +46,7 @@ export const ChatDatePicker: React.FC<Props> = (props: Props): JSX.Element => {
       <button
         data-cy="chat-date-picker-outside-button"
         type="button"
-        className="fixed inset-0 cursor-default outline-none"
+        className="fixed inset-0 cursor-default outline-none w-full h-full"
         tabIndex={-1}
         onClick={(e) => {
           e.stopPropagation();
