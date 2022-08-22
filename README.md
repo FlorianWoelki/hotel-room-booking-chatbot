@@ -1,5 +1,7 @@
 # Hotel Room Booking Chatbot
 
+A demo of the project can be found [here](https://hotel-room-booking-chatbot.vercel.app/).
+
 This project was realized with the following technologies:
 
 `JavaScript`, `TypeScript`, `TailwindCSS`, `React`, `Cypress`, `Jest`
