@@ -18,7 +18,7 @@ chatbot messages and free text messages. Both files are located under `src/asset
 The starting point of this file is an array which contains all the message objects.
 A message object follows the following structure:
 
-```json
+```js
 {
   // The message id that will be used to jump from the `followMessageId` field.
   "id": "messageId",
@@ -54,7 +54,7 @@ Here are some examples for using the different types of `userInput.type`.
 <details>
   <summary>`"type": "text"`</summary>
 
-  ```json
+  ```js
   {
     "userInput": {
       "followMessageId": "someOtherId",
@@ -79,7 +79,7 @@ Here are some examples for using the different types of `userInput.type`.
   This allows the user to communicate freely with the chatbot with the given
   answers specified in `chatbotAnswers.json`.
 
-  ```json
+  ```js
   {
     "userInput": {
       "type": "freeText",
@@ -94,7 +94,7 @@ Here are some examples for using the different types of `userInput.type`.
 
   Defines some kind of selection of `n` selections.
 
-  ```json
+  ```js
   {
     "userInput": {
       "type": "selection",
@@ -113,7 +113,7 @@ Here are some examples for using the different types of `userInput.type`.
 
   Allows the user to specify a date range.
 
-  ```json
+  ```js
   {
     "userInput": {
       "followMessageId": "breakfastIncluded",
@@ -128,7 +128,7 @@ Here are some examples for using the different types of `userInput.type`.
 
   Allows the user to specify a link that is clickable and will open in a new tab.
 
-  ```json
+  ```js
   {
     "userInput": {
       "type": "link",
@@ -148,7 +148,7 @@ a `messages.json` message object.
 
 The main structure looks like this:
 
-```json
+```js
 {
   "answers": [
     {
