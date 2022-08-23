@@ -5,6 +5,39 @@
       "listOfWords": ["hello", "hi", "hey"],
       "singleResponse": true,
       "requiredWords": []
+    },
+    {
+      "botResponse": ["I am really fine, thank you 😃", "Totally awesome!"],
+      "listOfWords": ["how", "are", "you", "doing"],
+      "singleResponse": true,
+      "requiredWords": []
+    },
+    {
+      "botResponse": [
+        "Sure, How can I help you?",
+        "I would like to hear your request!"
+      ],
+      "listOfWords": ["Inquiry", "help", "booking", "need"],
+      "singleResponse": false,
+      "requiredWords": ["room"]
+    },
+    {
+      "botResponse": ["Please use the other functionality of me!"],
+      "listOfWords": ["want", "book", "room"],
+      "singleResponse": false,
+      "requiredWords": ["room"]
+    },
+    {
+      "botResponse": ["Please call us at the following number: +49xxxxxxxxxxx"],
+      "listOfWords": ["change", "room"],
+      "singleResponse": false,
+      "requiredWords": ["room"]
+    },
+    {
+      "botResponse": ["My name is Auti 🤖", "I am Auti!"],
+      "listOfWords": ["name", "what", "your"],
+      "singleResponse": true,
+      "requiredWords": []
     }
   ],
   "unsureAnswers": ["I am not sure, what that means 😔"]
