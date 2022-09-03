@@ -39,7 +39,7 @@
       "followMessageId": "howManyChildren",
       "type": "text",
       "validation": "number",
-      "placeholder": "Enter the amount of adult guests"
+      "placeholder": "The amount of adult guests (only as a number)"
     }
   },
   {
@@ -49,7 +49,7 @@
       "followMessageId": "howManyRooms",
       "type": "text",
       "validation": "number",
-      "placeholder": "Enter the amount of children guests"
+      "placeholder": "The amount of children guests (only as a number)"
     }
   },
   {
@@ -59,7 +59,7 @@
       "followMessageId": "howLongStay",
       "type": "text",
       "validation": "number",
-      "placeholder": "Enter the number of rooms"
+      "placeholder": "The number of rooms (only as a number)"
     }
   },
   {
