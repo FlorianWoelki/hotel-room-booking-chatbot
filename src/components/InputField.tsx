@@ -54,8 +54,10 @@ interface Props {
  * This component can expect a `ref` that will be forwarded to the input
  * element itself. With that you can get the input or manipulate the field
  * directly.
+ *
  * The component renders an input field in a parent element that can be rendered
- * with an extra children.
+ * with an extra children. In addition, it renders a validation reason error,
+ * when the specific validation is not fulfilled.
  *
  * @param {Props} props The input field props.
  * @returns {JSX.Element} The rendered input field.
@@ -65,10 +67,12 @@ export const InputField = forwardRef<HTMLInputElement, Props>(
     const [isValidationValid, setIsValidationValid] = useState<boolean>(
       props.validation === undefined,
     );
+    const [validationReason, setValidationReason] = useState<string>('');
 
     useEffect(() => {
       // Resets the validation.
       setIsValidationValid(props.validation === undefined);
+      setValidationReason('');
     }, [props.validation]);
 
     /**
@@ -87,12 +91,23 @@ export const InputField = forwardRef<HTMLInputElement, Props>(
 
       props.validation
         .validate(event.target.value)
-        .then(() => setIsValidationValid(true))
-        .catch(() => setIsValidationValid(false));
+        .then(() => {
+          setValidationReason('');
+          setIsValidationValid(true);
+        })
+        .catch((reason) => {
+          setValidationReason(reason.message);
+          setIsValidationValid(false);
+        });
     };
 
     return (
       <div className={classNames('relative flex items-center', className)}>
+        {validationReason && (
+          <p className="text-red-500 -mt-6 text-center text-sm absolute top-0 inset-x-0 rounded bg-red-100 py-2">
+            {validationReason}
+          </p>
+        )}
         <input
           ref={ref}
           type="text"

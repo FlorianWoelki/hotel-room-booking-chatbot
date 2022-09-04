@@ -15,7 +15,7 @@ export const number = (): RequiredNumberSchema<
   number | undefined,
   AnyObject
 > => {
-  return yup.number().required();
+  return yup.number().required().typeError('Please specify only a number.');
 };
 
 /**
@@ -29,7 +29,7 @@ export const mobilePhoneNumber = (): RequiredStringSchema<
 > => {
   return yup
     .string()
-    .matches(mobilePhoneRegExp, 'Please enter a valid mobile phone number')
+    .matches(mobilePhoneRegExp, 'Please enter a valid mobile phone number.')
     .required();
 };
 
@@ -42,7 +42,7 @@ export const email = (): RequiredStringSchema<
   string | undefined,
   AnyObject
 > => {
-  return yup.string().email('Please enter a valid email address').required();
+  return yup.string().email('Please enter a valid email address.').required();
 };
 
 /**
