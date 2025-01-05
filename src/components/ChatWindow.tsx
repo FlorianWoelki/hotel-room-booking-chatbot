@@ -9,8 +9,8 @@ interface Props {
  * Will render a chat window that is flexible enough to adapt to smaller
  * screens. The passed in children will be inside of the chat window.
  *
- * @param {Props} props The props that will be passed to the chat window.
- * @returns {JSX.Element} The rendered chat window.
+ * @param props The props that will be passed to the chat window.
+ * @returns The rendered chat window.
  */
 export const ChatWindow: React.FC<Props> = (props: Props): JSX.Element => {
   return (

@@ -1,4 +1,4 @@
-import { classNames } from '../util/classNames';
+import { classNames } from "../util/classNames";
 
 interface TypingDotProps {
   /**
@@ -10,8 +10,8 @@ interface TypingDotProps {
 /**
  * Renders a single typing dot.
  *
- * @param {TypingDotProps} props The props that will be passed to the component.
- * @returns {JSX.Element} The rendered typing dot.
+ * @param props The props that will be passed to the component.
+ * @returns The rendered typing dot.
  */
 const TypingDot: React.FC<TypingDotProps> = (
   props: TypingDotProps,
@@ -19,7 +19,7 @@ const TypingDot: React.FC<TypingDotProps> = (
   return (
     <span
       className={classNames(
-        'w-2 h-2 rounded-full inline-block bg-gray-500 animate-typing-indicator',
+        "w-2 h-2 rounded-full inline-block bg-gray-500 animate-typing-indicator",
         props.className,
       )}
     ></span>
@@ -31,7 +31,7 @@ const TypingDot: React.FC<TypingDotProps> = (
  * component will make use of the @see TypingDot to animate and render three
  * different typing dots.
  *
- * @returns {JSX.Element} The rendered typing indicator with three typing dots.
+ * @returns The rendered typing indicator with three typing dots.
  */
 export const TypingIndicator: React.FC = (): JSX.Element => {
   return (

@@ -1,6 +1,6 @@
-import { UserInputTypeProps } from '../../@types/UserInputType';
-import { CalendarInputField } from '../CalendarInputField';
-import { SendButton } from '../SendButton';
+import { UserInputTypeProps } from "../../@types/UserInputType";
+import { CalendarInputField } from "../CalendarInputField";
+import { SendButton } from "../SendButton";
 
 interface DateProps {
   value?: string;
@@ -11,8 +11,8 @@ interface DateProps {
  * of the chatbot. This component renders an input field that can handle
  * different date ranges.
  *
- * @param {UserInputTypeProps & DateProps} props The date props.
- * @returns {JSX.Element} The rendered Date.
+ * @param props The date props.
+ * @returns The rendered Date.
  */
 export const Date: React.FC<UserInputTypeProps & DateProps> = (
   props: UserInputTypeProps & DateProps,
@@ -21,7 +21,7 @@ export const Date: React.FC<UserInputTypeProps & DateProps> = (
    * Returns `Please wait` when the prop `isWaitingForInput` is false and
    * `Please select a date range` when it is true.
    *
-   * @returns {string} The value for the calendar input field.
+   * @returns The value for the calendar input field.
    */
   const getValue = (): string => {
     if (props.value) {
@@ -29,8 +29,8 @@ export const Date: React.FC<UserInputTypeProps & DateProps> = (
     }
 
     return !props.isWaitingForInput
-      ? 'Please wait'
-      : 'Please select a date range';
+      ? "Please wait"
+      : "Please select a date range";
   };
 
   return (
@@ -42,7 +42,7 @@ export const Date: React.FC<UserInputTypeProps & DateProps> = (
           onClick={(e) => {
             e.stopPropagation();
             props.onSubmit?.(props.data!, value);
-            setDisplayValue('');
+            setDisplayValue("");
           }}
         ></SendButton>
       )}

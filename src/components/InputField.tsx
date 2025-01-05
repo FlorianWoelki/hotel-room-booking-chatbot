@@ -1,12 +1,12 @@
-import * as yup from 'yup';
+import * as yup from "yup";
 import React, {
   ChangeEvent,
   forwardRef,
   KeyboardEvent,
   useEffect,
   useState,
-} from 'react';
-import { classNames } from '../util/classNames';
+} from "react";
+import { classNames } from "../util/classNames";
 
 interface ChildrenCallback {
   /**
@@ -36,16 +36,15 @@ interface Props {
    * Defines the children that will be rendered inside of the input field
    * component.
    *
-   * @param {ChildrenCallback} childrenCallback The callback when the children will be rendered.
-   * @returns {React.ReactNode} The children that will be rendered.
+   * @param childrenCallback The callback when the children will be rendered.
+   * @returns The children that will be rendered.
    */
   children?: (childrenCallback: ChildrenCallback) => React.ReactNode;
   /**
    * Fires when a key was down in the input field.
    *
-   * @param {KeyboardEvent} event The keyboard event.
-   * @param {boolean} isValid If the input is valid.
-   * @return {void}
+   * @param event The keyboard event.
+   * @param isValid If the input is valid.
    */
   onKeyDown?: (event: KeyboardEvent, isValid?: boolean) => void;
 }
@@ -59,20 +58,20 @@ interface Props {
  * with an extra children. In addition, it renders a validation reason error,
  * when the specific validation is not fulfilled.
  *
- * @param {Props} props The input field props.
- * @returns {JSX.Element} The rendered input field.
+ * @param props The input field props.
+ * @returns The rendered input field.
  */
 export const InputField = forwardRef<HTMLInputElement, Props>(
   ({ className, children, onKeyDown, ...props }, ref): JSX.Element => {
     const [isValidationValid, setIsValidationValid] = useState<boolean>(
       props.validation === undefined,
     );
-    const [validationReason, setValidationReason] = useState<string>('');
+    const [validationReason, setValidationReason] = useState<string>("");
 
     useEffect(() => {
       // Resets the validation.
       setIsValidationValid(props.validation === undefined);
-      setValidationReason('');
+      setValidationReason("");
     }, [props.validation]);
 
     /**
@@ -80,8 +79,7 @@ export const InputField = forwardRef<HTMLInputElement, Props>(
      * current input of the input field and sets the `isValid` property in the
      * children callback.
      *
-     * @param {ChangeEvent<HTMLInputElement>} event The change event.
-     * @returns {void}
+     * @param event The change event.
      */
     const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
       if (!props.validation) {
@@ -92,7 +90,7 @@ export const InputField = forwardRef<HTMLInputElement, Props>(
       props.validation
         .validate(event.target.value)
         .then(() => {
-          setValidationReason('');
+          setValidationReason("");
           setIsValidationValid(true);
         })
         .catch((reason) => {
@@ -102,7 +100,7 @@ export const InputField = forwardRef<HTMLInputElement, Props>(
     };
 
     return (
-      <div className={classNames('relative flex items-center', className)}>
+      <div className={classNames("relative flex items-center", className)}>
         {validationReason && (
           <p className="text-red-500 -mt-6 text-center text-sm absolute top-0 inset-x-0 rounded bg-red-100 py-2">
             {validationReason}

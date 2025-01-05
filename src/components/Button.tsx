@@ -1,5 +1,5 @@
-import { MouseEvent } from 'react';
-import { classNames } from '../util/classNames';
+import { MouseEvent } from "react";
+import { classNames } from "../util/classNames";
 
 interface Props {
   children: React.ReactNode | React.ReactNode[];
@@ -7,8 +7,7 @@ interface Props {
   /**
    * Fires when the button was clicked.
    *
-   * @param {MouseEvent} event The event of this action.
-   * @returns {void}
+   * @param event The event of this action.
    */
   onClick?: (event: MouseEvent) => void;
 }
@@ -18,8 +17,8 @@ interface Props {
  * all props excluding `children` and `className` to the first child element
  * of this component.
  *
- * @param {Props} props The props of the Button
- * @returns {JSX.Element} The rendered button.
+ * @param props The props of the Button
+ * @returns The rendered button.
  */
 export const Button: React.FC<Props> = ({
   children,
@@ -30,7 +29,7 @@ export const Button: React.FC<Props> = ({
     <button
       type="button"
       className={classNames(
-        'text-white bg-blue-500 rounded py-2 px-4 hover:bg-blue-600 transition duration-150 ease-in-out',
+        "text-white bg-blue-500 rounded py-2 px-4 hover:bg-blue-600 transition duration-150 ease-in-out",
         className,
       )}
       {...props}

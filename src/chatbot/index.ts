@@ -1,10 +1,10 @@
-import chatbotAnswers from '../assets/chatbotAnswers.json';
+import chatbotAnswers from "../assets/chatbotAnswers.json";
 
 /**
  * Creates a new chatbot based on the correct and unsure answers in the
  * `assets/chatbotAnswers.json` structure.
  *
- * @returns {FreeTextChatbot} A new instance of the free text chatbot.
+ * @returns A new instance of the free text chatbot.
  */
 export const createChatbot = (): FreeTextChatbot => {
   return new FreeTextChatbot(
@@ -32,8 +32,8 @@ export default class FreeTextChatbot {
    * `unsureAnswers`. Use `createChatbot` for using the data defined in the
    * `chatbotAnswers` file.
    *
-   * @param {ChatbotAnswer[]} answers The possible chatbot answers.
-   * @param {string[]} unsureAnswers The possible unsure chatbot answers.
+   * @param answers The possible chatbot answers.
+   * @param unsureAnswers The possible unsure chatbot answers.
    */
   constructor(answers: ChatbotAnswer[], unsureAnswers: string[]) {
     this.answers = answers;
@@ -46,11 +46,11 @@ export default class FreeTextChatbot {
    * parameters, which are both necessary, when there should be a required word
    * in the sentence to calculate the proper probability.
    *
-   * @param {string[]} userMessage The user message splitted into words.
-   * @param {string[]} recognizedWords The recognized words for the chatbot.
-   * @param {boolean} [singleResponse] When the response should be in a single response.
-   * @param {string[]} [requiredWords] The required words that should occur in the sentence.
-   * @returns {number} Probability of the message occurrence.
+   * @param userMessage The user message splitted into words.
+   * @param recognizedWords The recognized words for the chatbot.
+   * @param [singleResponse] When the response should be in a single response.
+   * @param [requiredWords] The required words that should occur in the sentence.
+   * @returns Probability of the message occurrence.
    */
   private messageProbability = (
     userMessage: string[],
@@ -83,7 +83,7 @@ export default class FreeTextChatbot {
    * Returns the max probability key in the `probabilityMap` of the chatbot
    * class. If the max probability was not found, null will be returned.
    *
-   * @returns {string | null} The max probability in the `probabilityMap`.
+   * @returns The max probability in the `probabilityMap`.
    */
   private findMaxProbabilityKey = (): string | null => {
     let maxProbabilityKey: string | null = null;
@@ -101,7 +101,7 @@ export default class FreeTextChatbot {
   /**
    * Returns a random unsure message from the `unsureAnswers` array.
    *
-   * @returns {string} Random unsure message from the `unsureAnswers` array.
+   * @returns Random unsure message from the `unsureAnswers` array.
    */
   private randomUnsureMessage = (): string => {
     return this.unsureAnswers[
@@ -114,12 +114,11 @@ export default class FreeTextChatbot {
    * then the overall message probability that this response will be sent to
    * the user.
    *
-   * @param {string[]} message The split up message into words.
-   * @param {string | string[]} botResponse What the possible responses of the bot are.
-   * @param {string[]} listOfWords The list of words to recognize the message.
-   * @param {boolean} [singleResponse] When the response should be in a single response.
-   * @param {string[]} [requiredWords] The required words that should occur in the sentence.
-   * @returns {void}
+   * @param message The split up message into words.
+   * @param botResponse What the possible responses of the bot are.
+   * @param listOfWords The list of words to recognize the message.
+   * @param [singleResponse] When the response should be in a single response.
+   * @param [requiredWords] The required words that should occur in the sentence.
    */
   private createResponse = (
     message: string[],
@@ -128,7 +127,7 @@ export default class FreeTextChatbot {
     singleResponse: boolean = false,
     requiredWords: string[] = [],
   ): void => {
-    let randomBotResponse: string = '';
+    let randomBotResponse: string = "";
     if (Array.isArray(botResponse)) {
       randomBotResponse =
         botResponse[Math.floor(Math.random() * botResponse.length)];
@@ -152,8 +151,8 @@ export default class FreeTextChatbot {
    * responses of the chatbot and then calculating the max probability. The
    * response with the max probability will be returned.
    *
-   * @param {string[]} message The user message split up into words.
-   * @returns {string | null} The best match or `null`.
+   * @param message The user message split up into words.
+   * @returns The best match or `null`.
    */
   private checkAllMessages = (message: string[]): string | null => {
     this.probabilityMap = {};
@@ -175,8 +174,7 @@ export default class FreeTextChatbot {
   /**
    * Adds an answer to the chatbot `answers` array.
    *
-   * @param {ChatbotAnswer} answer The answer for the chatbot.
-   * @returns {void}
+   * @param answer The answer for the chatbot.
    */
   public addAnswer = (answer: ChatbotAnswer): void => {
     this.answers.push(answer);
@@ -186,8 +184,8 @@ export default class FreeTextChatbot {
    * Returns a possible unsure or correct answer to a message that the user
    * has specified.
    *
-   * @param {string} userInput The message of the user.
-   * @returns {string} The response of the chatbot to the message.
+   * @param userInput The message of the user.
+   * @returns The response of the chatbot to the message.
    */
   public getResponse = (userInput: string): string => {
     const splitMessage = userInput.toLowerCase().split(/\s+|[,;?!.-]\s*/g);

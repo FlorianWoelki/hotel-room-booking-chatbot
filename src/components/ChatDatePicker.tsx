@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import { useState } from "react";
+import DatePicker from "react-datepicker";
 
 interface Props {
   /**
@@ -12,16 +12,13 @@ interface Props {
   endDate?: Date;
   /**
    * When the user clicks outside of the date picker, this event will be fired.
-   *
-   * @returns {void}
    */
   onClickOutside?: () => void;
   /**
    * When the dates change this event will be fired.
    *
-   * @param {Date} startDate The changed start date.
-   * @param {Date} endDate The changed end date.
-   * @returns {void}
+   * @param startDate The changed start date.
+   * @param endDate The changed end date.
    */
   onChange?: (startDate: Date, endDate: Date) => void;
 }
@@ -32,8 +29,8 @@ interface Props {
  * button an event will be fired. The internal component @see DatePicker will
  * be used to render the date picker.
  *
- * @param {Props} props The props of the chat date picker.
- * @returns {JSX.Element} The rendered chat date picker.
+ * @param props The props of the chat date picker.
+ * @returns The rendered chat date picker.
  */
 export const ChatDatePicker: React.FC<Props> = (props: Props): JSX.Element => {
   const [startDate, setStartDate] = useState<Date>(

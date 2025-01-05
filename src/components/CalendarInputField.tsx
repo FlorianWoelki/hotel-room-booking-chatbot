@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { ReactComponent as CalendarIcon } from '../assets/icons/calendar.svg';
-import { classNames } from '../util/classNames';
-import { ChatDatePicker } from './ChatDatePicker';
+import React, { useEffect, useState } from "react";
+import { ReactComponent as CalendarIcon } from "../assets/icons/calendar.svg";
+import { classNames } from "../util/classNames";
+import { ChatDatePicker } from "./ChatDatePicker";
 
 interface ChildrenCallback {
   /**
@@ -11,8 +11,7 @@ interface ChildrenCallback {
   /**
    * Sets the display value for the input field.
    *
-   * @param {string} value The value for setting the display value.
-   * @returns {void}
+   * @param value The value for setting the display value.
    */
   setDisplayValue: (value: string) => void;
   /**
@@ -33,8 +32,8 @@ interface Props {
   /**
    * Defines the children of the input field.
    *
-   * @param {ChildrenCallback} childrenCallback The callback when the input field gets rendered
-   * @returns {React.ReactNode} The children nodes.
+   * @param childrenCallback The callback when the input field gets rendered
+   * @returns The children nodes.
    */
   children?: (childrenCallback: ChildrenCallback) => React.ReactNode;
 }
@@ -44,20 +43,20 @@ interface Props {
  * range in an interactive calendar. This component also formats the selected
  * dates and displays it in the input field.
  *
- * @param {Props} props The props of the calendar input field.
- * @returns {JSX.Element} The rendered calendar input field.
+ * @param props The props of the calendar input field.
+ * @returns The rendered calendar input field.
  */
 export const CalendarInputField: React.FC<Props> = (
   props: Props,
 ): JSX.Element => {
-  const [displayValue, setDisplayValue] = useState<string>(props.value ?? '');
+  const [displayValue, setDisplayValue] = useState<string>(props.value ?? "");
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>();
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (!props.value) {
-      setDisplayValue('');
+      setDisplayValue("");
       return;
     }
 
@@ -77,11 +76,11 @@ export const CalendarInputField: React.FC<Props> = (
    * the date style will be medium. Which means that the date will become
    * something like this: `01.01.2022`.
    *
-   * @param {Date} date The date that will be formatted.
-   * @returns {string} The formatted date string.
+   * @param date The date that will be formatted.
+   * @returns The formatted date string.
    */
   const formatDate = (date: Date): string => {
-    return date.toLocaleDateString('de-DE', { dateStyle: 'medium' });
+    return date.toLocaleDateString("de-DE", { dateStyle: "medium" });
   };
 
   return (
@@ -89,8 +88,8 @@ export const CalendarInputField: React.FC<Props> = (
       <div
         data-cy="calendar-input-field"
         className={classNames(
-          'flex items-center relative py-4 pl-6 pr-12 shadow rounded-full border border-gray-100 cursor-pointer',
-          props.disabled && 'cursor-not-allowed bg-gray-100',
+          "flex items-center relative py-4 pl-6 pr-12 shadow rounded-full border border-gray-100 cursor-pointer",
+          props.disabled && "cursor-not-allowed bg-gray-100",
         )}
         onClick={() => setIsCalendarOpen((prev) => !prev)}
       >
@@ -98,7 +97,7 @@ export const CalendarInputField: React.FC<Props> = (
         {displayValue && <p className="text-gray-600">{displayValue}</p>}
         {props.children?.({
           value: displayValue,
-          isValid: displayValue.includes('-'),
+          isValid: displayValue.includes("-"),
           setDisplayValue,
         })}
       </div>

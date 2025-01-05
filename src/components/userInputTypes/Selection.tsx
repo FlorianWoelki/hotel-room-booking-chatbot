@@ -1,14 +1,14 @@
-import { UserInputTypeProps } from '../../@types/UserInputType';
-import { classNames } from '../../util/classNames';
-import { Button } from '../Button';
+import { UserInputTypeProps } from "../../@types/UserInputType";
+import { classNames } from "../../util/classNames";
+import { Button } from "../Button";
 
 /**
  * Renders a selection list for the user that is highly specific to the
  * application of the chatbot. This component renders multiple buttons that are
  * based on `data.userInput.selections`.
  *
- * @param {UserInputTypeProps} props The Selection props.
- * @returns {JSX.Element} The rendered Selection list.
+ * @param props The Selection props.
+ * @returns The rendered Selection list.
  */
 export const Selection: React.FC<UserInputTypeProps> = (
   props: UserInputTypeProps,
@@ -16,7 +16,7 @@ export const Selection: React.FC<UserInputTypeProps> = (
   return (
     <div
       className={classNames(
-        'flex flex-wrap items-center justify-center gap-2 bg-gray-100 p-4 rounded shadow',
+        "flex flex-wrap items-center justify-center gap-2 bg-gray-100 p-4 rounded shadow",
         props.className,
       )}
     >

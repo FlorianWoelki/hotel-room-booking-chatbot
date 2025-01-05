@@ -1,8 +1,8 @@
-import { UserInputTypeProps } from '../../@types/UserInputType';
-import { InputField } from '../InputField';
-import { getValidationByStr } from '../../util/inputFieldValidation';
-import { forwardRef } from 'react';
-import { SendButton } from '../SendButton';
+import { UserInputTypeProps } from "../../@types/UserInputType";
+import { InputField } from "../InputField";
+import { getValidationByStr } from "../../util/inputFieldValidation";
+import { forwardRef } from "react";
+import { SendButton } from "../SendButton";
 
 interface TextProps {
   /**
@@ -18,7 +18,7 @@ interface TextProps {
  * In addition, this component expects a `ref` that is passed to this
  * component.
  *
- * @returns {JSX.Element} The rendered Selection list.
+ * @returns The rendered Selection list.
  */
 export const Text = forwardRef<
   HTMLInputElement,
@@ -30,19 +30,19 @@ export const Text = forwardRef<
       data-cy="text-input-field"
       validation={getValidationByStr(props.data.userInput.validation)}
       placeholder={
-        !props.isWaitingForInput ? 'Please wait' : props.inputFieldPlaceholder
+        !props.isWaitingForInput ? "Please wait" : props.inputFieldPlaceholder
       }
       disabled={!props.isWaitingForInput}
       className={props.className}
       onKeyDown={(e, isValid) => {
         if (
-          e.key === 'Enter' &&
+          e.key === "Enter" &&
           isValid &&
           ref !== null &&
-          typeof ref !== 'function'
+          typeof ref !== "function"
         ) {
           props.onSubmit?.(props.data!, ref.current!.value);
-          ref.current!.value = '';
+          ref.current!.value = "";
         }
       }}
     >
@@ -51,9 +51,9 @@ export const Text = forwardRef<
           data-cy="text-send-button"
           disabled={!props.isWaitingForInput || !isValid}
           onClick={() => {
-            if (ref !== null && typeof ref !== 'function') {
+            if (ref !== null && typeof ref !== "function") {
               props.onSubmit?.(props.data!, ref.current!.value);
-              ref.current!.value = '';
+              ref.current!.value = "";
             }
           }}
         ></SendButton>

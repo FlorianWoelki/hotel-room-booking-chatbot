@@ -27,16 +27,14 @@ interface MessageTypingEffect {
   /**
    * Sets the messages of the hooks.
    *
-   * @param {React.SetStateAction<Message[]>} messages The new messages that will be used for the typing effect.
-   * @return {void}
+   * @param messages The new messages that will be used for the typing effect.
    */
   setMessages: (messages: React.SetStateAction<Message[]>) => void;
   /**
    * Adds a typing message that will optionally transformed and added to the
    * queue of all the messages.
    *
-   * @param {string | null} message The message itself.
-   * @returns {void}
+   * @param message The message itself.
    */
   addTypingMessage: (message: string | null) => void;
 }
@@ -54,10 +52,10 @@ interface MessageTypingEffect {
  * 4. When `stage` will be changed the queue index will be reset because all
  *    the messages of the new stage will be used.
  *
- * @param {number} stage The current stage of the messaging.
- * @param {Object} importedMessages The message data in json format.
- * @param {Function} [transformMessage] When the message needs to be transformed.
- * @returns {MessageTypingEffect} The data for the message typing effect.
+ * @param stage The current stage of the messaging.
+ * @param importedMessages The message data in json format.
+ * @param [transformMessage] When the message needs to be transformed.
+ * @returns The data for the message typing effect.
  */
 export const useMessageTypingEffect = (
   stage: number,

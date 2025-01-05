@@ -1,19 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
-import { MessageData, MessageType, Selection } from './@types/Message';
+import { useEffect, useRef, useState } from "react";
+import { MessageData, MessageType, Selection } from "./@types/Message";
 
-import importedMessages from './assets/messages.json';
-import { createChatbot } from './chatbot';
-import { ChatError } from './components/ChatError';
-import { ChatMessage } from './components/ChatMessage';
-import { ChatWindow } from './components/ChatWindow';
-import { TypingIndicator } from './components/TypingIndicator';
-import { Date } from './components/userInputTypes/Date';
-import { Link } from './components/userInputTypes/Link';
-import { Selection as SelectionComp } from './components/userInputTypes/Selection';
-import { Terminate } from './components/userInputTypes/Terminate';
-import { Text } from './components/userInputTypes/Text';
-import { useMessageTypingEffect } from './hooks/useMessageTypingEffect';
-import { classNames } from './util/classNames';
+import importedMessages from "./assets/messages.json";
+import { createChatbot } from "./chatbot";
+import { ChatError } from "./components/ChatError";
+import { ChatMessage } from "./components/ChatMessage";
+import { ChatWindow } from "./components/ChatWindow";
+import { TypingIndicator } from "./components/TypingIndicator";
+import { Date } from "./components/userInputTypes/Date";
+import { Link } from "./components/userInputTypes/Link";
+import { Selection as SelectionComp } from "./components/userInputTypes/Selection";
+import { Terminate } from "./components/userInputTypes/Terminate";
+import { Text } from "./components/userInputTypes/Text";
+import { useMessageTypingEffect } from "./hooks/useMessageTypingEffect";
+import { classNames } from "./util/classNames";
 
 const chatbot = createChatbot();
 
@@ -44,8 +44,8 @@ const App = () => {
    * is in the message. If it is, it will be replaced with the actual value
    * that was defined by the user.
    *
-   * @param {string} message The message that will be transformed.
-   * @returns {string} The transformed message.
+   * @param message The message that will be transformed.
+   * @returns The transformed message.
    */
   const transformMessage = (message: string): string => {
     if (recentAnswer) {
@@ -107,22 +107,21 @@ const App = () => {
    * If not, it will try to find the follow up message id that will be used
    * to display the next message.
    *
-   * @param {MessageData} data The data of the message
-   * @param {string | Selection} value The message value or selected option.
-   * @returns {void}
+   * @param data The data of the message
+   * @param value The message value or selected option.
    */
   const submitAnswer = (data: MessageData, value: string | Selection): void => {
     setIsWaitingForInput(false);
-    const message = typeof value === 'string' ? value : value.value;
+    const message = typeof value === "string" ? value : value.value;
 
     setSavedData((prev) => ({ ...prev, [data.id]: message }));
-    setMessages((prev) => [...prev, { value: message, type: 'user' }]);
+    setMessages((prev) => [...prev, { value: message, type: "user" }]);
 
-    if (data.userInput.type === 'terminate') {
+    if (data.userInput.type === "terminate") {
       return;
     }
 
-    if (data.userInput.type === 'freeText') {
+    if (data.userInput.type === "freeText") {
       const response = chatbot.getResponse(message);
       addTypingMessage(response);
       return;
@@ -133,8 +132,8 @@ const App = () => {
     // Whenever the `followMessageId` is in the value object directly.
     if (
       !data.userInput.followMessageId &&
-      typeof value === 'object' &&
-      data.userInput.type === 'selection'
+      typeof value === "object" &&
+      data.userInput.type === "selection"
     ) {
       foundMessageIndex = importedMessages.findIndex(
         (message) => message.id === value.followMessageId,
@@ -163,10 +162,10 @@ const App = () => {
    * This function will return the correct component that can be used to
    * create a user input field.
    *
-   * @returns {JSX.Element} The rendered user input component.
+   * @returns The rendered user input component.
    */
   const getUserInput = (): JSX.Element => {
-    const containerBottom = classNames('pt-4 flex mx-auto w-full');
+    const containerBottom = classNames("pt-4 flex mx-auto w-full");
     const data = importedMessages.at(stage);
     const userInputType = data?.userInput.type as MessageType;
 
@@ -179,21 +178,21 @@ const App = () => {
     }
 
     switch (userInputType) {
-      case 'text':
-      case 'freeText':
+      case "text":
+      case "freeText":
         return (
           <Text
             ref={inputFieldRef}
             className={containerBottom}
             isWaitingForInput={isWaitingForInput}
             inputFieldPlaceholder={
-              importedMessages.at(stage)?.userInput.placeholder ?? ''
+              importedMessages.at(stage)?.userInput.placeholder ?? ""
             }
             data={data}
             onSubmit={submitAnswer}
           />
         );
-      case 'selection':
+      case "selection":
         return (
           <SelectionComp
             isWaitingForInput={isWaitingForInput}
@@ -202,7 +201,7 @@ const App = () => {
             onSubmit={submitAnswer}
           />
         );
-      case 'date':
+      case "date":
         return (
           <Date
             isWaitingForInput={isWaitingForInput}
@@ -210,7 +209,7 @@ const App = () => {
             onSubmit={submitAnswer}
           />
         );
-      case 'link':
+      case "link":
         return (
           <Link
             className={containerBottom}
@@ -219,7 +218,7 @@ const App = () => {
             onSubmit={submitAnswer}
           />
         );
-      case 'terminate':
+      case "terminate":
         return <Terminate />;
       default:
     }
@@ -242,7 +241,7 @@ const App = () => {
             <ChatMessage
               key={index}
               data-cy={`chat-message-${message.type}`}
-              position={message.type === 'bot' ? 'left' : 'right'}
+              position={message.type === "bot" ? "left" : "right"}
             >
               {message.value}
             </ChatMessage>
