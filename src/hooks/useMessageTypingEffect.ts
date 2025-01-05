@@ -84,7 +84,7 @@ export const useMessageTypingEffect = (
     }
 
     addTypingMessage(stageMessages.messages[queuedMessageIndex] ?? null);
-  }, [queuedMessageIndex, stage]);
+  }, [queuedMessageIndex, stage, transformMessage]);
 
   useEffect(() => {
     const stageMessages = importedMessages.at(stage);
