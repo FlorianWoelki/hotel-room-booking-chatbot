@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import messageJson from '../assets/messages.json';
+import { useEffect, useState } from "react";
+import messageJson from "../assets/messages.json";
 
 // Defines the message delay in milliseconds.
 const MESSAGE_DELAY = import.meta.env.DEV ? 100 : 1750;
@@ -12,7 +12,7 @@ interface Message {
   /**
    * The type of the message.
    */
-  type: 'user' | 'bot';
+  type: "user" | "bot";
 }
 
 interface MessageTypingEffect {
@@ -42,7 +42,7 @@ interface MessageTypingEffect {
 }
 
 /**
- * This hook can be used to completely simualte a messaging conversation.
+ * This hook can be used to completely simulate a messaging conversation.
  * It will simulate a typing effect and will always set the current message,
  * if there is a new one.
  *
@@ -50,7 +50,7 @@ interface MessageTypingEffect {
  * 1. Get all the stage messages of the current stage.
  * 2. Add a timeout that will indicate the typing and then add the message
  *    to the `messages` state. It will increase the queue index by one.
- * 3. Adds a new typing message from the stage messages.
+ * 3. Adds a new typing message from the staged messages.
  * 4. When `stage` will be changed the queue index will be reset because all
  *    the messages of the new stage will be used.
  *
@@ -70,7 +70,7 @@ export const useMessageTypingEffect = (
   >();
   const [messages, setMessages] = useState<Message[]>([]);
 
-  const addTypingMessage = (message: string | null) => {
+  const addTypingMessage = (message: string | null): void => {
     if (message && transformMessage) {
       setQueuedMessage(transformMessage(message));
       return;
@@ -86,7 +86,7 @@ export const useMessageTypingEffect = (
     }
 
     addTypingMessage(stageMessages.messages[queuedMessageIndex] ?? null);
-  }, [queuedMessageIndex]);
+  }, [queuedMessageIndex, stage]);
 
   useEffect(() => {
     const stageMessages = importedMessages.at(stage);
@@ -94,18 +94,16 @@ export const useMessageTypingEffect = (
       return;
     }
 
-    /*if (queuedMessageIndex + 1 > stageMessages.messages.length) {
-      return;
-    }*/
-
-    setTimeout(() => {
-      setMessages((prev) => [...prev, { value: queuedMessage, type: 'bot' }]);
+    const timeoutId = setTimeout(() => {
+      setMessages((prev) => [...prev, { value: queuedMessage, type: "bot" }]);
       setQueuedMessageIndex((prev) => prev + 1);
     }, MESSAGE_DELAY);
-  }, [queuedMessage]);
+
+    return () => clearTimeout(timeoutId);
+  }, [queuedMessage, stage]);
 
   useEffect(() => {
-    setQueuedMessageIndex(0);
+    setQueuedMessageIndex(0); // Resets index on stage change.
   }, [stage]);
 
   return {
